@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <div className=' relative'>
-      This is hOme Page
+      This is hOme Page hh
       <Slider />
       {/* card container Start */}
 
@@ -81,7 +81,7 @@ export default function Home() {
       <div className='  w-full bg-neutral-100 px-20 py-5 space-y-10'>
         <div className='Footer-1 flex justify-between items-center px-10'>
           <div className='LOGO text-3xl font-bold  '>
-            <Link to='/'>AvAz</Link>
+            <Lin k to='/'>AvAz</Lin>
           </div>
           <div className='QUICK_LINKS '>
             <ul className=' flex gap-10 text-xl'>
