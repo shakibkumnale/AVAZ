@@ -1,5 +1,7 @@
 import React from 'react'
 import Slider from './Slider'
+import Pop1l from './Pop1l'
+
 import { FaInstagram } from "react-icons/fa6";
 import { FaSquareInstagram } from "react-icons/fa6";
 import { FaFacebookSquare } from "react-icons/fa";
@@ -13,8 +15,10 @@ export default function Home() {
   const CardHeadings = ["Chat Bot", "AVAZ", "Jarvis"]
 
   return (
+    
     <div className=' relative'>
-      This is hOme Page hh
+     
+      <Pop1l />
       <Slider />
       {/* card container Start */}
 
