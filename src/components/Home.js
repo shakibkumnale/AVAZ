@@ -1,6 +1,5 @@
 import React from 'react'
 import Slider from './Slider'
-import Pop1l from './Pop1l'
 
 import { FaInstagram } from "react-icons/fa6";
 import { FaSquareInstagram } from "react-icons/fa6";
@@ -18,7 +17,7 @@ export default function Home() {
     
     <div className=' relative'>
      
-      <Pop1l />
+  
       <Slider />
       {/* card container Start */}
 

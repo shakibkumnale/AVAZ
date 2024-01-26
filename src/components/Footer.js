@@ -25,7 +25,7 @@ export default function
       </div> */}
       {/* footer-1 end */}
         {/* footer-2 start   */}
-      { location!="/ai" &&
+      { location!="/ai" && location!="/sign" &&
         <div className='FOOTER'>
 
 <div className='  w-full bg-neutral-100 px-20 py-5 space-y-10'>

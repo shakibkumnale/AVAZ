@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import Pop1l from './Pop1l'
+
 import { Link, useLocation } from 'react-router-dom'
 import { FiMenu } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
@@ -9,6 +11,7 @@ export default function() {
     const [bgcolor, setbgcolor] = useState("red")
     const [fgcolor, setfgcolor] = useState("white")
     const [path,setPath]=useState(true)
+    const [pop,setPop]= useState(false);
     console.log(location==="/ai")
     const hovered = () => {
         setbgcolor(() => {
@@ -33,8 +36,9 @@ export default function() {
     }
     return (
         <>
+            <Pop1l poplog={pop} onChange={(value)=>setPop(value)}/>
         {
-            location!="/ai" &&
+            location!="/ai"  &&
 
                     
                 //navbar  for device greater than 768px 
@@ -56,8 +60,10 @@ export default function() {
                     </div>
                     <div className='BTNS max-[768px]:hidden  '>
                         <ul className=' flex gap-4'>
-                            <li className={`w-32 h-10 leading-8 bg-${bgcolor === "transparent" ? "red" : "transparent"}-500 text-${fgcolor === "black" ? "white" : "black"} border-2 text-center rounded-full hover:bg-red-500 hover:text-white transition  delay-100 duration-200 ease-in `} onMouseOver={hovered} onMouseOut={unhovered}><Link to='/login'>Log In</Link></li>
-                            <li className={` w-32 h-10 leading-8 bg-${bgcolor}-500  text-center border-2 rounded-full text-${fgcolor} transition  delay-100 duration-200 ease-in`} onMouseOver={hovered} onMouseOut={unhovered} ><Link to='/getStarted'>Get Started</Link></li>
+                            {/* <li  className={`w-32 h-10 leading-8 bg-${bgcolor === "transparent" ? "red" : "transparent"}-500 text-${fgcolor === "black" ? "white" : "black"} border-2 text-center rounded-full hover:bg-red-500 hover:text-white transition  delay-100 duration-200 ease-in `} onMouseOver={hovered} onMouseOut={unhovered}><Link to='/login'>Log In</Link></li> */}
+                            <button onClick={()=>{pop===true? setPop(false): setPop(true)}} className={`w-32 h-10 leading-8 bg-${bgcolor === "transparent" ? "red" : "transparent"}-500 text-${fgcolor === "black" ? "white" : "black"} border-2 text-center rounded-full hover:bg-red-500 hover:text-white transition  delay-100 duration-200 ease-in `} onMouseOver={hovered} onMouseOut={unhovered}>Log In</button>
+
+                            <li className={` w-32 h-10 leading-8 bg-${bgcolor}-500  text-center border-2 rounded-full text-${fgcolor} transition  delay-100 duration-200 ease-in`} onMouseOver={hovered} onMouseOut={unhovered} ><Link to='/sign'>Get Started</Link></li>
                         </ul>
                     </div>
                
@@ -85,8 +91,9 @@ export default function() {
                             <li><Link to='/' className='  hover:underline' onClick={()=>{setopen(!open)}}>Home</Link></li>
                             <li><Link to='/about' className=' hover:underline' onClick={()=>{setopen(!open)}}>About</Link></li>
                             <li><Link to='/document' className=' hover:underline'onClick={()=>{setopen(!open)}}>Document</Link></li>
-                            <li><Link to='/contact' className=' hover:underline'onClick={()=>{setopen(!open)}}>Contact</Link></li>
+                            <li><Link to='/contact'  className=' hover:underline'onClick={()=>{setopen(!open)}}>Contact</Link></li>
                         </ul>
+
                     </div>
                     }
 

@@ -8,6 +8,9 @@ import About from './components/About';
 import Document from './components/Document';
 import Chatbot from './components/Chatbot';
 import Footer from './components/Footer';
+import SignLog from './components/SignLog';
+
+
 function App() {
   
   return (
@@ -22,6 +25,8 @@ function App() {
           <Route path='/about' element={<About/>}/>
           <Route path='/document' element={<Document/>}/>
           <Route path='/ai' element={<Chatbot/>}/>
+          <Route path='/sign' element={<SignLog/>}/>
+
 
 
           

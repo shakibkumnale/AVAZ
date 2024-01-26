@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { FiMenu } from "react-icons/fi";
 import { LuUserCircle2 } from "react-icons/lu";
 import { Link, useLocation } from 'react-router-dom';
@@ -8,6 +8,82 @@ import { TiContacts } from "react-icons/ti";
 import { TiDocumentText } from "react-icons/ti";
 import { FcAbout } from "react-icons/fc";
 export default function () {
+//   const [speehc,setSpeehc]=useState("");
+// var SpeechRecognition = SpeechRecognition ;
+// var SpeechGrammarList = SpeechGrammarList ;
+// var voicebtn = document.getElementById("voicebtn");
+
+// var grammer = "#JSGF V1.0;";
+// var recognition = new SpeechRecognition();
+// var speechRecognitionGrammerList = new SpeechGrammarList();
+// speechRecognitionGrammerList.addFromString(grammer, 1);
+// var google;
+
+// recognition.grammers = speechRecognitionGrammerList;
+// recognition.lang = "en-US";
+// recognition.interimResults = false;
+// recognition.onresult = function(event) {
+//   var last = event.results.length - 1;
+//   var command = event.results[last][0].transcript;
+//   var message = command;
+//  setSpeehc(message);
+
+// };
+// voicebtn.addEventListener("click", function() {
+//   recognition.start();
+
+// });
+// recognition.onspeechend = function() {
+//   recognition.stop();
+//   // voicebtn.classList.remove("hidden");
+//   // glens.classList.remove("hidden");
+//   // keyboard.classList.remove("hidden");
+//   // bar.classList.add("hidden");
+//   console.log("Speech recognition has stopped.");
+// };
+const [speehc, setSpeehc] = useState('');
+  const [recognition, setRecognition] = useState(null);
+
+  useEffect(() => {
+    const initializeSpeechRecognition = () => {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognitionInstance = new SpeechRecognition();
+      recognitionInstance.lang = 'en-US';
+      recognitionInstance.interimResults = false;
+      recognitionInstance.onresult = (event) => {
+        const last = event.results.length - 1;
+        const command = event.results[last][0].transcript;
+        setSpeehc(command);
+      };
+      setRecognition(recognitionInstance);
+    };
+
+    initializeSpeechRecognition();
+
+    return () => {
+      if (recognition) {
+        recognition.abort();
+      }
+    };
+  }, []);
+
+  const handleVoiceButtonClick = () => {
+    if (recognition) {
+      recognition.start();
+    }
+  };
+  // recognition.onspeechend = function() {
+  //   //   recognition.stop();
+  //   //   // voicebtn.classList.remove("hidden");
+  //   //   // glens.classList.remove("hidden");
+  //   //   // keyboard.classList.remove("hidden");
+  //   //   // bar.classList.add("hidden");
+  //   //   console.log("Speech recognition has stopped.");
+  //   // };
+
+
+
+  
 const loc=useLocation().pathname
   return (
     <div className=' border-4 border-red-800 flex w-full h-screen '>
@@ -29,8 +105,10 @@ const loc=useLocation().pathname
         </div>
 
       </div>
-      <div className='AI-CHAT border border-green-500 w-[70%] h-full'>
-
+      <div className='AI-CHAT border relative border-green-500 w-[70%] h-full'>
+<div className='w-full h-20  flex justify-center absolute bottom-4 '>
+  <input type="text" value={speehc} onChange={(e)=>{setSpeehc(e.target.value)}} className='w-[50%] h-11 pl-5 p-2 text-xl border-2 border-blue-500 rounded-full    '></input> <button onClick={handleVoiceButtonClick} id="voicebtn" className='h-11 bg-green-400 w-16' >bt </button>
+</div>
 
       </div>
       <div className='HISTORY border border-blue-500 w-[20%] h-full'>
