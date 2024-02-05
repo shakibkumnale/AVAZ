@@ -44,9 +44,9 @@ export default function
     //     }
     // }, 7000);
     return (
-        <div className='flex w-full overflow-hidden h-[550px] relative '>
+        <div className='flex w-full max-[768px]:hidden  overflow-hidden h-[550px] max-[768px]:h-80 shadow-xl relative '>
 
-    <div className='w-full'
+    <div className='w-full '
     style={ {
                 
    
@@ -57,7 +57,8 @@ export default function
         {
             imgs.map((s)=>{
                 return <div className='w-full h-full'
-                style={ {
+                style={ { 
+                    
                     //  backgroundSize:'cover',
                     // backgroundImage:`url(${s})`,
                     //  backgroundRepeat:'no-repeat',

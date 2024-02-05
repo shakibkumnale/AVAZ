@@ -42,8 +42,8 @@ export default function() {
 
                     
                 //navbar  for device greater than 768px 
-            <div className=''>
-                <div className='NAVBAR flex justify-between  px-10 text-xl h-16  shadow-md items-center w-full max-[768px]:px-8 relative'>
+            <div className=' relative'>
+                <div className='NAVBAR flex justify-between  pl-10 pr-5 text-xl h-16  shadow-md items-center w-full max-[768px]:px-8 relative'>
                     <div className='LOGO text-3xl font-bold  '>
                         <Link to='/'>AvAz</Link>
                     </div>
@@ -57,7 +57,7 @@ export default function() {
                             <li><Link to='/contact' className={`${location==="/contact"?" text-red-500 hover:text-black":"text-black hover:text-red-500"} `}>Contact</Link></li>
 
                         </ul>
-                    </div>
+                    </div>{ false &&
                     <div className='BTNS max-[768px]:hidden  '>
                         <ul className=' flex gap-4'>
                             {/* <li  className={`w-32 h-10 leading-8 bg-${bgcolor === "transparent" ? "red" : "transparent"}-500 text-${fgcolor === "black" ? "white" : "black"} border-2 text-center rounded-full hover:bg-red-500 hover:text-white transition  delay-100 duration-200 ease-in `} onMouseOver={hovered} onMouseOut={unhovered}><Link to='/login'>Log In</Link></li> */}
@@ -65,6 +65,13 @@ export default function() {
 
                             <li className={` w-32 h-10 leading-8 bg-${bgcolor}-500  text-center border-2 rounded-full text-${fgcolor} transition  delay-100 duration-200 ease-in`} onMouseOver={hovered} onMouseOut={unhovered} ><Link to='/sign'>Get Started</Link></li>
                         </ul>
+                    </div>
+
+                            }
+                            {/* if user logined  */}
+                    <div  className='profile right-2 flex justify-end items-center w-56 h-full'>
+                        <div className='fname  items-center  text-2xl bold font-serif  h-8 w-40 text-black flex justify-end mr-2'><span className='h-8 ' >shakib</span> </div>
+                       <Link to='/profile'><div className='img w-12 h-12 items-center my-auto border-2 border-black rounded-full'><img className='w-full h-full rounded-full ' src='http://localhost:3000/dp.png'></img></div></Link>
                     </div>
                
                     {open &&

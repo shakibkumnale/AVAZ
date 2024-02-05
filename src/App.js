@@ -9,6 +9,8 @@ import Document from './components/Document';
 import Chatbot from './components/Chatbot';
 import Footer from './components/Footer';
 import SignLog from './components/SignLog';
+import Profile from './components/Profile';
+
 
 
 function App() {
@@ -26,7 +28,7 @@ function App() {
           <Route path='/document' element={<Document/>}/>
           <Route path='/ai' element={<Chatbot/>}/>
           <Route path='/sign' element={<SignLog/>}/>
-
+          <Route path='/profile' element={<Profile/>}/>
 
 
           
