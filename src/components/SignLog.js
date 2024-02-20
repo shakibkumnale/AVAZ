@@ -20,10 +20,10 @@ const SignLog = () => {
   e.preventDefault();
   try{
     if( user.Email !== ""){
- 
-      const otpres = await axios.post("http://localhost:3001/otp", user)
       setBClr("bg-gray-400 cursor-not-allowed ")
       setReado("disabled");
+      const otpres = await axios.post("http://192.168.1.208:3001/otp", user);
+      
       setTimeout(() => {
         setBClr("bg-blue-500 hover:bg-blue-600")
         setReado("");
@@ -45,23 +45,43 @@ const SignLog = () => {
     try {
       if(clr==="green"){
       
-      const response = await axios.post("http://localhost:3001/form", user)
+      const response = await axios.post("http://192.168.1.208:3001/form", user)
       console.log(response.data.keyPattern);
       if(response.data==="success"){
+        setTitles('successfully');
+        setTimeout(() => {
+          setTitles('');
+        },6000);
         setSwicth(false);
 	setLg("shadow-inner bg-[#111111] border-2  border-b-[#111111] ");
 	setSg(" bg-gray-200 text-black ")
         alert("successfully submited"+response.data);
 
-      }else{
+      } else if (response.data==="invalid") {
+        setTitles('invalid otp');
+        setTimeout(() => {
+          setTitles('');
+        },6000);
+        
+      } 
+      else{
         if (response.data.code === 11000 && response.data.keyPattern.Email) {
           setTitles('Email already exists');
+          setTimeout(() => {
+            setTitles('');
+          },6000);
           // You can handle this by informing the user or redirecting to a page with an error message.
       } else if (response.data.code === 11000 && response.data.keyPattern.Phone) {
         setTitles('Phone number already exists');
+        setTimeout(() => {
+          setTitles('');
+        },6000);
           // Handle phone number duplication similarly to the email case.
       } else {
           console.log('Error inserting user:')
+          setTimeout(() => {
+            setTitles('');
+          },6000);
       }
     }
     }else{
@@ -150,7 +170,7 @@ const SignLog = () => {
         <div className="relative h-[73%]  bg-[#111111] w-5/6 max-[768px]:w-11/12 border-[2px] shadow-lg border-gray-200 rounded-3xl ">
           <div className=" absolute -top-10 flex h-10 left-5 rounded-t-2xl  w-64">
             <button onClick={signform} className={`w-32 h-10 cursor-poiter rounded-ss-2xl ${sg}`}>
-			Sign
+			Sign-up
 			</button>
             <button onClick={logform} className={` w-32 h-10   text-center rounded-se-2xl p-1 ${lg}`}>Login</button>
           </div>
@@ -167,7 +187,7 @@ const SignLog = () => {
 				<div className="relative h-10 w-64   flex mt-4 justify-center items-center  ">
 					<input id="user" type="text" required className='shadow-lg   bg-transparent peer focus:outline-none  pl-4 pt-3 pb-2  rounded-lg w-full  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent '>
 					</input>   
-					<label htmlFor='user' className=" transition-all duration-300 absolute left-2 text-base font-mono text-white bg-[#111111]  -top-4 px-2
+					<label htmlFor='user' className=" transition-all duration-300 absolute left-2 text-base font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
 					 peer-placeholder-shown:text-lg  peer-placeholder-shown:pl-3 peer-focus:bg-[#111111]
 					 peer-placeholder-shown:top-1 peer-valid:bg-[#111111]
 					peer-focus:text-base  peer-focus:text-[#2cffe6] peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
@@ -178,7 +198,7 @@ const SignLog = () => {
 				<div className="relative h-10 w-64   flex mt-3 justify-center items-center  ">
 					<input id="ps" type={chckbox} required placeholder='' className=' shadow-lg  bg-transparent peer focus:outline-none  pl-4 pt-3 pb-2  rounded-lg w-full  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent '>
 					</input>   
-					<label htmlFor='ps' className=" transition-all duration-300 absolute left-2 text-base font-mono text-white bg-[#111111]  -top-4 px-2
+					<label htmlFor='ps' className=" transition-all duration-300 absolute left-2 text-base font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
 					 peer-placeholder-shown:text-lg  peer-placeholder-shown:pl-3 
            peer-focus:text-[#2cffe6] peer-focus:bg-[#111111]
 					 peer-placeholder-shown:top-1 peer-valid:bg-[#111111]
@@ -228,7 +248,7 @@ const SignLog = () => {
                   ></input>
                   <label
                     htmlFor="First-Name"
-                    className=" text-white bg-[#111111]  transition-all duration-300 absolute left-9 text-sm font-mono  -top-4 px-2
+                    className=" text-[rgb(95 99 104)] bg-[#111111]  transition-all duration-300 absolute left-9 text-sm font-mono  -top-4 px-2
 					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-[#111111]
 					 peer-placeholder-shown:top-2 peer-valid:bg-[#111111]
 					peer-focus:text-sm  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
@@ -251,7 +271,7 @@ const SignLog = () => {
                   ></input>
                   <label
                     htmlFor="Last-Name"
-                    className=" transition-all duration-300 absolute left-9 text-sm font-mono text-white bg-[#111111]  -top-4 px-2
+                    className=" transition-all duration-300 absolute left-9 text-sm font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
 					 peer-placeholder-shown:text-base    peer-placeholder-shown:pl-2 peer-focus:bg-[#111111]
 					 peer-placeholder-shown:top-2 peer-valid:bg-[#111111]
 					peer-focus:text-sm  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
@@ -276,7 +296,7 @@ const SignLog = () => {
                   ></input>
                   <label
                     htmlFor="email"
-                    className=" transition-all duration-300 absolute  left-9 text-sm font-mono text-white bg-[#111111]  -top-4 px-2
+                    className=" transition-all duration-300 absolute  left-9 text-sm font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
 					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-[#111111]
 					 peer-placeholder-shown:top-2 peer-valid:bg-[#111111]
 					peer-focus:text-sm  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
@@ -301,13 +321,13 @@ const SignLog = () => {
                   ></input>
                   <label
                     htmlFor="number"
-                    className=" transition-all duration-300 absolute left-9 text-sm font-mono text-white bg-[#111111]  -top-4 px-2
+                    className=" transition-all duration-300 absolute left-9 text-sm font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
 					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-[#111111]
 					 peer-placeholder-shown:top-2 peer-valid:bg-[#111111]
 					peer-focus:text-sm  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
 					 "
                   >
-                    Contact No.
+                    Phone
                   </label>{" "}
                 </div>
               </div>
@@ -327,7 +347,7 @@ const SignLog = () => {
                   ></input>
                   <label
                     htmlFor="Password"
-                    className="  transition-all duration-300 absolute left-9 text-sm font-mono text-white bg-[#111111]  -top-4 px-2
+                    className="  transition-all duration-300 absolute left-9 text-sm font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
 					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-[#111111]
 					 peer-placeholder-shown:top-2 peer-valid:bg-[#111111]
 					peer-focus:text-sm  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
@@ -350,7 +370,7 @@ const SignLog = () => {
                   ></input>
                   <label
                     htmlFor="PasswordC"
-                    className=" transition-all duration-300 absolute left-9 text-sm font-mono text-white bg-[#111111]  -top-4 px-2
+                    className=" transition-all duration-300 absolute left-9 text-sm font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
 					 peer-placeholder-shown:text-base  peer-placeholder-shown:pl-2 peer-focus:bg-[#111111]
 					 peer-placeholder-shown:top-2 peer-valid:bg-[#111111]
 					peer-focus:text-sm  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
@@ -370,7 +390,7 @@ const SignLog = () => {
                    onChange={onChangeInput} 
                    className="bg-transparent shadow-lg peer focus:outline-none text-base  pl-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent " id="City">
 				 </input>
-         <label htmlFor='City' className=" transition-all duration-300 absolute left-9 text-base font-mono text-white bg-[#111111]  -top-4 px-2
+         <label htmlFor='City' className=" transition-all duration-300 absolute left-9 text-base font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
 					 peer-placeholder-shown:text-lg  peer-placeholder-shown:pl-3 peer-focus:bg-[#111111]
 					 peer-placeholder-shown:top-1 peer-valid:bg-[#111111]
 					peer-focus:text-base  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
@@ -404,7 +424,7 @@ const SignLog = () => {
                  ></input>
                   <label
                     htmlFor="otp"
-                    className=" transition-all duration-300 absolute left-9 text-base font-mono text-white bg-[#111111]  -top-4 px-2
+                    className=" transition-all duration-300 absolute left-9 text-base font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
                     peer-placeholder-shown:text-lg  peer-placeholder-shown:pl-3 peer-focus:bg-[#111111]
                     peer-placeholder-shown:top-1 peer-valid:bg-[#111111]
                    peer-focus:text-base  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
@@ -416,8 +436,8 @@ const SignLog = () => {
               </div>
               <i></i>{" "}
 			  <div className="w-full my-6 flex justify-around">
-        <button disabled={reado} onClick={otpGenerate} className={` w-40 h-10 rounded-xl   text-lg text-white text-center ${bclr} `}> get OTP</button>
-				<input type="submit" value="submit" className=" w-40 h-10 rounded-xl bg-blue-500 hover:bg-blue-600 text-lg text-white text-center  "></input>
+        <button disabled={reado} onClick={otpGenerate} className={` w-40 h-10 rounded-xl   text-lg text-white max-[768px]:w-28  text-center ${bclr} `}> get OTP</button>
+				<input type="submit" value="submit" className=" w-40 h-10 rounded-xl bg-blue-500 hover:bg-blue-600 max-[768px]:w-28 text-lg text-white text-center  "></input>
 			  
         </div> 
             </div>
