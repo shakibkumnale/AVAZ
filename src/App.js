@@ -10,6 +10,7 @@ import Chatbot from './components/Chatbot';
 import Footer from './components/Footer';
 import SignLog from './components/SignLog';
 import Profile from './components/Profile';
+import Auth from './components/Auth';
 
 
 
@@ -22,12 +23,12 @@ function App() {
         
       <Navbar/>
         <Routes>
-          <Route path='/' element={<Home/>}/>
+          <Route path='/' element={<Auth com="Home"/>}/>
           <Route path='/contact' element={<Contact/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/document' element={<Document/>}/>
-          <Route path='/ai' element={<Chatbot/>}/>
-          <Route path='/sign' element={<SignLog/>}/>
+          <Route path='/ai' element={<Auth com="Chatbot"/>}/>
+          <Route path='/sign' element={<Auth com="SignLog"/>}/>
           <Route path='/profile' element={<Profile/>}/>
 
 

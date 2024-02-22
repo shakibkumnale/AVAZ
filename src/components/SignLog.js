@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios"
+// import  Redirect, { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; 
+import axios from "axios";
 // import {useNavigate} from react-router-dom;
 const SignLog = () => {
 	const [chckbox,setChckbox]= useState("password");
@@ -8,13 +10,19 @@ const SignLog = () => {
   const [bclr, setBClr] = useState(" bg-blue-500 hover:bg-blue-600");
 
   const [reado,setReado]=useState("");
-  const [lg,setLg]=useState(" bg-gray-200 text-black ");
+  const [lg,setLg]=useState(" bg-gray-200 text-black rounded-es-[45px] font-normal text-base transition-all duration-300");
   const [titles,setTitles]=useState("");
-  const [sg,setSg]=useState("shadow-inner bg-[#111111]  border-2  border-b-[#111111] ");
+  const [titleslog,setTitleslog]=useState("");
+
+  const [sg,setSg]=useState("shadow-inner bg-[#111111] font-semibold text-xl transition-all duration-700 rounded-ee-[45px]  ");
   let name, valiue;
   const [user,setUser] = useState({
     Fname:"", Lname:"", Email:"", Phone:"", Password:"", CPassword:"", City:"Thane", Otp:""
   });
+  // for login user
+  const [userl,setUserL] = useState({Username:"", Pass_word:""});
+  const navigate=useNavigate();
+
   //otp generator /opt 
  const otpGenerate =async(e)=>{
   e.preventDefault();
@@ -22,12 +30,13 @@ const SignLog = () => {
     if( user.Email !== ""){
       setBClr("bg-gray-400 cursor-not-allowed ")
       setReado("disabled");
-      const otpres = await axios.post("http://192.168.1.208:3001/otp", user);
-      
       setTimeout(() => {
         setBClr("bg-blue-500 hover:bg-blue-600")
         setReado("");
-      },60000);
+      },6000);
+      const otpres = await axios.post("http://"+/*192.168.1.208*/"localhost:3001/otp", user);
+      
+      
     }
     else{
       setTitles('enter Email');
@@ -45,7 +54,7 @@ const SignLog = () => {
     try {
       if(clr==="green"){
       
-      const response = await axios.post("http://192.168.1.208:3001/form", user)
+      const response = await axios.post("http://"+/*192.168.1.208*/"localhost:3001/form", user)
       console.log(response.data.keyPattern);
       if(response.data==="success"){
         setTitles('successfully');
@@ -53,9 +62,9 @@ const SignLog = () => {
           setTitles('');
         },6000);
         setSwicth(false);
-	setLg("shadow-inner bg-[#111111] border-2  border-b-[#111111] ");
-	setSg(" bg-gray-200 text-black ")
-        alert("successfully submited"+response.data);
+	setLg("shadow-inner bg-[#111111] font-semibold text-xl transition-all duration-300 rounded-es-[45px]");
+	setSg(" bg-gray-200 text-black font-normal text-base transition-all duration-300 rounded-ee-[45px] ")
+        // alert("successfully submited"+response.data);
 
       } else if (response.data==="invalid") {
         setTitles('invalid otp');
@@ -94,6 +103,37 @@ const SignLog = () => {
  
    }
    
+  //  sumit for login 
+  const login = async (e)=>{
+    e.preventDefault();
+    try {
+      console.log("requsted")
+      const logres=await axios.post("http://hocalhost:3001/log",userl);
+      
+      if(logres.data==="success"){
+        navigate("/")
+        alert("successfull")
+      }else if(logres==="not match"){
+        setTitleslog("invalid password");
+        setTimeout(() => {
+          setTitleslog('');
+        }, 6000);
+      }
+      else{
+        setTitleslog("user not exist");
+        setTimeout(() => {
+          setTitleslog('');
+        }, 6000);
+      }
+      
+    } catch (error) {
+      console.log(error)
+      
+    }
+
+  }
+
+// for sign up input page 
  const onChangeInput= (event) =>{
   // console.log(event);
   name=event.target.name;
@@ -102,6 +142,16 @@ const SignLog = () => {
   console.log(user)
  // execpt password Cpassword and city
  }
+//for login inputs
+const onChngInptlog= (event) =>{
+  // console.log(event);
+  name=event.target.name;
+  valiue=event.target.value;
+  setUserL({...userl, [name]:valiue});
+  console.log(userl)
+
+ }
+
 
   // const [ct,setCt]=useState("Thane");
   // const stPassC=(Event)=>{
@@ -151,14 +201,14 @@ const SignLog = () => {
   // switch for sign and log{
   function logform() {
 	setSwicth(false);
-	setLg("shadow-inner bg-[#111111] border-2  border-b-[#111111] ");
-	setSg(" bg-gray-200 text-black ")
+	setLg("shadow-inner font-semibold text-xl transition-all duration-100 bg-[#111111] ");
+	setSg(" bg-gray-200 text-black font-normal text-base transition-all duration-100 rounded-ee-[45px] ")
   }
 
   function signform() {
 	setSwicth(true);
-	setLg(" bg-gray-200 text-black ");
-	setSg("shadow-inner bg-[#111111] border-2  border-b-[#111111]  ")
+	setLg(" bg-gray-200 text-black rounded-es-[45px] font-normal text-base transition-all duration-100");
+	setSg("shadow-inner font-semibold text-xl transition-all duration-100 bg-[#111111]  ")
   }
   // }
   return (
@@ -167,36 +217,50 @@ const SignLog = () => {
         <img src="http://localhost:3000/6.png" className=" w-full h-full"></img>
       </div>
       <div className="img w-5/12  bg-[#000] max-[768px]:w-full h-full max-[768px]:overflow-hidden shadow-inner flex-nowrap max-[768px]:flex-wrap flex justify-center items-center bg-white-500 ">
-        <div className="relative h-[73%]  bg-[#111111] w-5/6 max-[768px]:w-11/12 border-[2px] shadow-lg border-gray-200 rounded-3xl ">
-          <div className=" absolute -top-10 flex h-10 left-5 rounded-t-2xl  w-64">
-            <button onClick={signform} className={`w-32 h-10 cursor-poiter rounded-ss-2xl ${sg}`}>
+        <div className="relative  h-[73%]  bg-[#111111] w-5/6 max-[768px]:w-11/12 rounded-ss-[0px]  rounded-lg ">
+          <div className="bg-[#111111]  absolute -top-10 flex h-10 left-0 rounded-t-lg  w-64">
+            <button onClick={signform} className={`w-32 h-10 cursor-poiter rounded-ss-md ${sg}`}>
 			Sign-up
 			</button>
-            <button onClick={logform} className={` w-32 h-10   text-center rounded-se-2xl p-1 ${lg}`}>Login</button>
+            <button onClick={logform} className={` w-32 h-10   text-center rounded-se-md rounde p-1  ${lg}`}>Login</button>
           </div>
 		   { !swicth &&
 		  <div className=" w-full h-full flex justify-center items-center ">
-		  <form className='w-10/12 h-96  flex-col'>
+		  <form onSubmit={login} className='w-10/12 h-96  flex-col'>
 				<div className="w-full p-2 h-auto">
 					<h1  className="w-full text-center p-2 h-auto font-bold text-white text-3xl "> WELCOME BACK  </h1>
           <h2  className="w-full text-center p-2 h-8 font-bold text-white text-xl ">Login</h2>
 					
 				</div>
-				<div className="w-full h-7 text-center text-lg text-red-600" >{titles}</div>
-				<div className="w-full h-16 flex  mb-3 justify-center items-center">
-				<div className="relative h-10 w-64   flex mt-4 justify-center items-center  ">
-					<input id="user" type="text" required className='shadow-lg   bg-transparent peer focus:outline-none  pl-4 pt-3 pb-2  rounded-lg w-full  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent '>
+				<div className="w-full h-7 text-center text-lg text-red-600" >{titleslog}</div>
+				<div className="w-full h-16 flex justify-center items-center">
+				<div className="relative h-10 w-64   flex my-3 justify-center items-center  ">
+					<input id="us" type="text"
+           required 
+           name="Username"
+           placeholder=''
+           value={userl.Username}
+           onChange={onChngInptlog}
+           className=' shadow-lg  bg-transparent peer focus:outline-none text-xl px-4 pt-3 pb-2  rounded-lg w-full  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent '>
 					</input>   
-					<label htmlFor='user' className=" transition-all duration-300 absolute left-2 text-base font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
-					 peer-placeholder-shown:text-lg  peer-placeholder-shown:pl-3 peer-focus:bg-[#111111]
+					<label htmlFor='pus' className=" transition-all duration-300 absolute left-2 text-base font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
+					 peer-placeholder-shown:text-lg  peer-placeholder-shown:pl-3 
+           peer-focus:text-[#2cffe6] peer-focus:bg-[#111111]
 					 peer-placeholder-shown:top-1 peer-valid:bg-[#111111]
-					peer-focus:text-base  peer-focus:text-[#2cffe6] peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
-					 ">username</label> </div>
+					peer-focus:text-base  peer-focus:z-10 peer-focus:-top-4 peer-focus:px-2
+					 ">Username</label> </div>
 				    <i></i>
 				</div>
 			    <div className="w-full h-16 flex justify-center items-center">
-				<div className="relative h-10 w-64   flex mt-3 justify-center items-center  ">
-					<input id="ps" type={chckbox} required placeholder='' className=' shadow-lg  bg-transparent peer focus:outline-none  pl-4 pt-3 pb-2  rounded-lg w-full  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent '>
+				<div className="relative h-10 w-64   flex mt-5 justify-center items-center  ">
+					<input id="ps"
+           type={chckbox} 
+           required 
+           name="Pass_word"
+           placeholder='' 
+           value={userl.Pass_word}
+           onChange={onChngInptlog}
+           className=' shadow-lg  bg-transparent peer focus:outline-none text-xl   px-4 pt-3 pb-2  rounded-lg w-full  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent '>
 					</input>   
 					<label htmlFor='ps' className=" transition-all duration-300 absolute left-2 text-base font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
 					 peer-placeholder-shown:text-lg  peer-placeholder-shown:pl-3 
@@ -215,6 +279,7 @@ const SignLog = () => {
 			</div>
 			<div className=' w-full my-4 flex justify-center items-center h-12'>
 				<input className='w-24 bg-[#2cffe6] mt-5 rounded-lg cursor-pointer text-black font-serif h-9 ' type='submit' value="Login"></input>
+        <button disabled={reado} onClick={login} className={` w-40 h-10 rounded-xl   text-lg text-white max-[768px]:w-28  text-center ${bclr} `}> get OTP</button>
 			</div>
 			<div>
 				<a></a>
@@ -244,7 +309,7 @@ const SignLog = () => {
                    onChange={onChangeInput}
                     placeholder="shakib" //don't remove placeholder it's float then
 					
-                    className="   bg-transparent shadow-lg peer focus:outline-none text-base  pl-3 pt-2 pb-2  rounded-lg w-10/12 max-[768px]:w-11/12  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
+                    className="   bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12 max-[768px]:w-11/12  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
                   ></input>
                   <label
                     htmlFor="First-Name"
@@ -267,7 +332,7 @@ const SignLog = () => {
                    onChange={onChangeInput}
                     required
                     placeholder="shakib"
-                    className="   bg-transparent shadow-lg peer focus:outline-none text-base  pl-3 pt-2 pb-2  rounded-lg w-10/12 max-[768px]:w-11/12  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
+                    className="   bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12 max-[768px]:w-11/12  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
                   ></input>
                   <label
                     htmlFor="Last-Name"
@@ -292,7 +357,7 @@ const SignLog = () => {
                    onChange={onChangeInput}
                     required
                     placeholder="shakib"
-                    className="   bg-transparent shadow-lg peer focus:outline-none text-base  pl-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
+                    className="   bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
                   ></input>
                   <label
                     htmlFor="email"
@@ -317,7 +382,7 @@ const SignLog = () => {
                    onChange={onChangeInput}
                     required
                     placeholder="shakib"
-                    className="bg-transparent shadow-lg peer focus:outline-none text-base  pl-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 invalid:border-red-600 focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
+                    className="bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 invalid:border-red-600 focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
                   ></input>
                   <label
                     htmlFor="number"
@@ -343,7 +408,7 @@ const SignLog = () => {
                     type="Password"
                     required
                     placeholder="shakib"
-                    className={` shadow-lg  bg-transparent peer focus:outline-none text-base  pl-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-${clr}-500 border-${clr}-300    placeholder-transparent `}
+                    className={` shadow-lg  bg-transparent peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-${clr}-500 border-${clr}-300    placeholder-transparent `}
                   ></input>
                   <label
                     htmlFor="Password"
@@ -366,7 +431,7 @@ const SignLog = () => {
                     value={user.CPassword}
                     required
                     placeholder="shakib"
-                    className={`   bg-transparent shadow-lg peer focus:outline-none text-base  pl-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-${clr}-500 border-${clr}-300 placeholder-transparent `}
+                    className={`   bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-${clr}-500 border-${clr}-300 placeholder-transparent `}
                   ></input>
                   <label
                     htmlFor="PasswordC"
@@ -388,7 +453,7 @@ const SignLog = () => {
          placeholder="shakib"
          value={user.City}
                    onChange={onChangeInput} 
-                   className="bg-transparent shadow-lg peer focus:outline-none text-base  pl-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent " id="City">
+                   className="bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent " id="City">
 				 </input>
          <label htmlFor='City' className=" transition-all duration-300 absolute left-9 text-base font-mono text-[rgb(95 99 104)] bg-[#111111]  -top-4 px-2
 					 peer-placeholder-shown:text-lg  peer-placeholder-shown:pl-3 peer-focus:bg-[#111111]
@@ -420,7 +485,7 @@ const SignLog = () => {
            
                     placeholder="shakib"
 					
-                    className="bg-transparent shadow-lg peer focus:outline-none text-base  pl-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4  focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
+                    className="bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4  focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
                  ></input>
                   <label
                     htmlFor="otp"
