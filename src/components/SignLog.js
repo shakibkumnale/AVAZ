@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
+import noteContext from "../context/noteContext";
+
 // import  Redirect, { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
@@ -8,6 +10,7 @@ const SignLog = () => {
 	const [swicth,setSwicth]= useState(true);
   const [clr, setClr] = useState("gray");
   const [bclr, setBClr] = useState(" bg-blue-500 hover:bg-blue-600");
+  const contecs=useContext(noteContext);
 
   const [reado,setReado]=useState("");
   const [lg,setLg]=useState(" bg-gray-200 text-black rounded-es-[45px] font-normal text-base transition-all duration-300");
@@ -20,7 +23,7 @@ const SignLog = () => {
     Fname:"", Lname:"", Email:"", Phone:"", Password:"", CPassword:"", City:"Thane", Otp:""
   });
   // for login user
-  const [userl,setUserL] = useState({Username:"", Pass_word:""});
+  const [userl,setUserL] = useState({ Username:"",Pass_word:""});
   const navigate=useNavigate();
 
   //otp generator /opt 
@@ -34,7 +37,12 @@ const SignLog = () => {
         setBClr("bg-blue-500 hover:bg-blue-600")
         setReado("");
       },6000);
-      const otpres = await axios.post("http://"+/*192.168.1.208*/"localhost:3001/otp", user);
+      //  mobile use change the ip 
+
+      const otpres = await axios.post("http://172.20.10.3:3001/otp", user);
+      // pc use
+      // const otpres = await axios.post("http://localhost:3001/otp", user);
+
       
       
     }
@@ -53,8 +61,14 @@ const SignLog = () => {
     e.preventDefault();
     try {
       if(clr==="green"){
+
       
-      const response = await axios.post("http://"+/*192.168.1.208*/"localhost:3001/form", user)
+      // const response = await axios.post("http://"+/*192.168.1.208*/"localhost:3001/form", user)
+      //  mobile use change the ip 
+      
+      const response = await axios.post("http://172.20.10.3:3001/form", user);
+      // const response = await axios.post("http://localhost:3001/form", user);
+          
       console.log(response.data.keyPattern);
       if(response.data==="success"){
         setTitles('successfully');
@@ -103,17 +117,25 @@ const SignLog = () => {
  
    }
    
-  //  sumit for login 
-  const login = async (e)=>{
+  //  submit for login 
+  // 
+  const login =async(e)=>{
     e.preventDefault();
-    try {
-      console.log("requsted")
-      const logres=await axios.post("http://hocalhost:3001/log",userl);
-      
-      if(logres.data==="success"){
+    try{
+      if( userl.Username !== ""){
+      //  mobile use change the ip 
+        const logres = await axios.post("http://172.20.10.3:3001/log", userl);
+        // pc use
+        // const logres = await axios.post("http://localhost:3001/log",userl);
+
+        console.log("requsted")
+
+       console.log(logres);
+      if(logres.statusText==="success"){
+        contecs.update(logres.data);
         navigate("/")
         alert("successfull")
-      }else if(logres==="not match"){
+      }else if(logres.data==="not match"){
         setTitleslog("invalid password");
         setTimeout(() => {
           setTitleslog('');
@@ -125,14 +147,16 @@ const SignLog = () => {
           setTitleslog('');
         }, 6000);
       }
-      
-    } catch (error) {
-      console.log(error)
-      
+        
+      }
+      else{
+        setTitles('enter Email');
+      }
+    }catch{
+  
     }
-
-  }
-
+  
+   }
 // for sign up input page 
  const onChangeInput= (event) =>{
   // console.log(event);
@@ -279,7 +303,6 @@ const onChngInptlog= (event) =>{
 			</div>
 			<div className=' w-full my-4 flex justify-center items-center h-12'>
 				<input className='w-24 bg-[#2cffe6] mt-5 rounded-lg cursor-pointer text-black font-serif h-9 ' type='submit' value="Login"></input>
-        <button disabled={reado} onClick={login} className={` w-40 h-10 rounded-xl   text-lg text-white max-[768px]:w-28  text-center ${bclr} `}> get OTP</button>
 			</div>
 			<div>
 				<a></a>

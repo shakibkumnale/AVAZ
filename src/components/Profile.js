@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-export default function Profile() {
+export default function Profile(props) {
+  const {Fname, Lname, Email, Phone, City }=props.data;
   const [imgsrc, setImgsrc] = useState("http://localhost:3000/dp.png");
-  const [ct, setCt] = useState("Thane");
+  const [ct, setCt] = useState({
+            "Fname":Fname,
+            "Lname":Lname,
+            "Email":Email,
+            "Phone":Phone,
+            "City":City});
 
   const bd = "";
   return (
@@ -51,7 +57,7 @@ export default function Profile() {
                   id="F-name"
                   className="   top-0 z-10  bg-transparent  peer h-9 focus:outline-none   outline-none border-0 pl-4 p-1  text-xl  transition-all  w-52 duration-300 border-b-2 focus:border-b-3 focus:border-black border-gray-400 "
                   required
-                  value={ct}
+                  value={ct.Fname}
                   onChange={(event) => {
                     setCt(event.target.value);
                   }}
@@ -79,7 +85,7 @@ export default function Profile() {
                   id="L-name"
                   className="   top-0 z-10  bg-transparent  peer h-9 focus:outline-none   outline-none border-0 pl-4 p-1  text-xl  transition-all  w-52 duration-300 border-b-2 focus:border-b-3 focus:border-black border-gray-400 "
                   required
-                  value={ct}
+                  value={ct.Lname}
                   onChange={(event) => {
                     setCt(event.target.value);
                   }}
@@ -127,7 +133,7 @@ export default function Profile() {
                   id="number"
                   className="   top-0 z-10  bg-transparent  peer h-9 focus:outline-none   outline-none border-0 pl-4 p-1  text-xl  transition-all  w-52 duration-300 border-b-2 focus:border-b-3 focus:border-black border-gray-400 "
                   required
-                  value={ct}
+                  value={ct.Phone}
                   onChange={(event) => {
                     setCt(event.target.value);
                   }}
@@ -155,7 +161,7 @@ export default function Profile() {
                   id="City"
                   className="   top-0 z-10  bg-transparent  peer h-9 focus:outline-none   outline-none border-0 pl-4 p-1  text-xl  transition-all  w-52 duration-300 border-b-2 focus:border-b-3 focus:border-black border-gray-400 "
                   required
-                  value={ct}
+                  value={ct.City}
                   onChange={(event) => {
                     setCt(event.target.value);
                   }}
