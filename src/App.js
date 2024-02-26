@@ -24,7 +24,7 @@ function App() {
         
       <Navbar/>
         <Routes>
-          <Route path='/' element={<Auth Component={Home}/>}/>
+          <Route path='/' element={<Home/>}/>
           <Route path='/contact' element={<Contact/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/document' element={<Document/>}/>

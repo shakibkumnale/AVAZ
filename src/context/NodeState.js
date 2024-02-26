@@ -3,7 +3,7 @@ import NoteContext from "./noteContext";
 const NoteState=(props)=>{
     
     const [state,setState]= useState({
-        "access":false,
+        "Token":false,
         "Fname":"",
         "Lname":"",
         "Email":"",
@@ -13,7 +13,7 @@ const NoteState=(props)=>{
     const update=(data)=>{
         const {Fname, Lname, Email, Phone, City }=data;
           setState({
-            "access":true,
+            "Token":true,
             "Fname":Fname,
             "Lname":Lname,
             "Email":Email,

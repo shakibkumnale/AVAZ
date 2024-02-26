@@ -1,10 +1,7 @@
 import React, { useState,useContext } from "react";
 import noteContext from "../context/noteContext";
-
-// import  Redirect, { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
-// import {useNavigate} from react-router-dom;
 const SignLog = () => {
 	const [chckbox,setChckbox]= useState("password");
 	const [swicth,setSwicth]= useState(true);
@@ -39,7 +36,7 @@ const SignLog = () => {
       },6000);
       //  mobile use change the ip 
 
-      const otpres = await axios.post("http://172.20.10.3:3001/otp", user);
+      const otpres = await axios.post("http://192.168.1.208:3001/otp", user);
       // pc use
       // const otpres = await axios.post("http://localhost:3001/otp", user);
 
@@ -66,7 +63,7 @@ const SignLog = () => {
       // const response = await axios.post("http://"+/*192.168.1.208*/"localhost:3001/form", user)
       //  mobile use change the ip 
       
-      const response = await axios.post("http://172.20.10.3:3001/form", user);
+      const response = await axios.post("http://192.168.1.208:3001/form", user);
       // const response = await axios.post("http://localhost:3001/form", user);
           
       console.log(response.data.keyPattern);
@@ -124,7 +121,7 @@ const SignLog = () => {
     try{
       if( userl.Username !== ""){
       //  mobile use change the ip 
-        const logres = await axios.post("http://172.20.10.3:3001/log", userl);
+        const logres = await axios.post("http://192.168.1.208:3001/log", userl);
         // pc use
         // const logres = await axios.post("http://localhost:3001/log",userl);
 
@@ -236,7 +233,7 @@ const onChngInptlog= (event) =>{
   }
   // }
   return (
-    <div className="w-full h-full absolute top-[4rem] text-white flex ">
+    <div className="w-full h-full absolute top-0 pt-[4rem] text-white flex ">
       <div className="img w-7/12 h-full max-[768px]:hidden">
         <img src="http://localhost:3000/6.png" className=" w-full h-full"></img>
       </div>

@@ -11,16 +11,16 @@ export default function Profile(props) {
 
   const bd = "";
   return (
-    <div className="flex h-screen">
+    <div className="flex h-[100%] relative top-0 ">
       <div
-        className=" w-[35%] flex justify-center bg-[#333533] items-center 
+        className=" w-[35%] absolute top-0 pt-[4rem] h-[100%] flex justify-center bg-[#333533] items-center 
   border-r-4 border-[#71717150]"
       >
          {/* bg-[rgba(247,245,243,0.44)] */}
       <div className="flex flex-col w-80 rounded-[25px] h-5/6 border-2  bg-[#e7ecef] border-[#97979763]"><div className=" border-b-4 border-[#49494977] w-full h-16 "></div></div>
       </div>
       {/* bg-[#faf1e218] */}
-      <div className=" w-[65%] flex flex-col items-center  bg-[#e7ecef] justify-center h-screen overflow-y-scroll overflow-x-hidden ">
+      <div className=" absolute top-0 pt-[4rem] right-0 w-[65%] flex flex-col items-center  bg-[#e7ecef] justify-center h-screen overflow-y-scroll overflow-x-hidden ">
         <div className="w-4/6 border-[#e5e5e5] border-2 shadow-lg bg-[#ffffff] rounded-3xl ">
           <form>
           <div className="  flex  items-center justify-center h-80">

@@ -10,11 +10,12 @@ import SignLog from './SignLog';
 import Home from './Home';
 import Profile from './Profile';
 
-import { useNavigate } from "react-router-dom"; 
+import { Navigate } from "react-router-dom"; 
 
 
 const Auth=(props) =>{
-  const acces=useContext(noteContext)
+  const access=useContext(noteContext)
+  // const navigate= useNavigate();
   // const isAuthenticated =acces.access;
   // useEffect(() => {
   //  acces.update();
@@ -25,18 +26,14 @@ const Auth=(props) =>{
   //  isAuthenticated = await axios.post("http://"+/*192.168.1.208*/"localhost:3001/auth")
     
   // })
-  console.log(acces.state)
+  console.log(access.state)
   const {Component} = props
   // console.log(Component);
   return (
-<>{ acces.state.access &&
-  <Component data={acces.state}/>
+access.state.Token ? <Component data={access.state}/> :<Navigate to='/sign'/>
 
-}{!acces.state.access &&
-<SignLog/>
-}
 
- </>
+
   
   )
 }
