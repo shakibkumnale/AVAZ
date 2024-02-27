@@ -6,7 +6,7 @@ import Home from './components/Home';
 import Contact from './components/Contact';
 import About from './components/About';
 import Document from './components/Document';
-import Chatbot from './components/Chatbot';
+import ChatbotNew from './components/ChatbotNew';
 import Footer from './components/Footer';
 import SignLog from './components/SignLog';
 import Profile from './components/Profile';
@@ -28,7 +28,7 @@ function App() {
           <Route path='/contact' element={<Contact/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/document' element={<Document/>}/>
-          <Route path='/ai' element={<Auth Component={Chatbot}/>}/>
+          <Route path='/ai' element={<Auth Component={ChatbotNew}/>}/>
           <Route path='/sign' element={<SignLog/>}/>
           <Route path='/profile' element={<Auth Component={Profile}/>}/>
 

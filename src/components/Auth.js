@@ -5,7 +5,7 @@ import React, { useContext } from 'react'
 import noteContext from "../context/noteContext";
 import { useEffect } from "react";
 
-import Chatbot from './Chatbot';
+// import Chatbot from './Chatbot';
 import SignLog from './SignLog';
 import Home from './Home';
 import Profile from './Profile';

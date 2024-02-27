@@ -74,7 +74,7 @@ export default function() {
                             }
                             { access.state.Token &&
                    <div  className='profile right-2 flex justify-end items-center w-56 h-full'>
-                        <div className='fname  items-center  text-2xl bold font-serif  h-8 w-40 text-black flex justify-end mr-2'><span className='h-8 ' >access.state.Fname</span> </div>
+                        <div className='fname  items-center  text-2xl bold font-serif  h-8 w-40 text-black flex justify-end mr-2'><span className='h-8 ' >{access.state.Fname}</span> </div>
                        <Link to='/profile'>
                         <div className='img w-12 h-12 items-center my-auto border-2 border-black rounded-full'><img className='w-full h-full rounded-full ' src='http://192.168.1.208:3000/dp.png'></img>
                         </div></Link>
