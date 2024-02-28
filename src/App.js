@@ -12,6 +12,8 @@ import SignLog from './components/SignLog';
 import Profile from './components/Profile';
 import Auth from './components/Auth';
 import NoteState from './context/NodeState'
+import Jar from './components/jarvis';
+
 
 
 
@@ -30,6 +32,8 @@ function App() {
           <Route path='/document' element={<Document/>}/>
           <Route path='/ai' element={<Auth Component={ChatbotNew}/>}/>
           <Route path='/sign' element={<SignLog/>}/>
+          <Route path='/jar' element={<Jar/>}/>
+
           <Route path='/profile' element={<Auth Component={Profile}/>}/>
 
 
