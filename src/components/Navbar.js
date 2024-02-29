@@ -42,7 +42,7 @@ export default function() {
         <>
             <Pop1l poplog={pop} onChange={(value)=>setPop(value)}/>
         {
-            location!="/ai"  &&
+            location!="/ai" && location!="/Avaz"  &&
 
                     
                 //navbar  for device greater than 768px 
