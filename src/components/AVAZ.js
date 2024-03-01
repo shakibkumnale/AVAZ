@@ -4,27 +4,34 @@ import { FiMenu } from "react-icons/fi";
 import { LuUserCircle2 } from "react-icons/lu";
 import { Link, useLocation } from 'react-router-dom';
 import { BsRobot } from "react-icons/bs";
-import { FaHome,FaMicrophoneAlt } from "react-icons/fa";
+import { FaDownload, FaHome,FaMicrophoneAlt } from "react-icons/fa";
 import { TiContacts,TiDocumentText } from "react-icons/ti";
 import { FcAbout } from "react-icons/fc";
 import { IoSend,IoSearch,IoClose } from "react-icons/io5";
 import axios from "axios"
+import ReactPlayer from 'react-player';
 import { IoMdArrowDropleft,IoIosArrowBack,IoIosArrowForward } from "react-icons/io";
 import Loader from './Loader';
 import micGif from './googleVoice.gif'
-import { MdContentCopy,MdOutlineEdit } from "react-icons/md";
+import { MdContentCopy,MdDownload,MdOutlineEdit } from "react-icons/md";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { TbReload } from "react-icons/tb";
 import { RiImageEditLine } from "react-icons/ri";
 import { IoImageOutline } from "react-icons/io5";
 export default function Avaz() {
   const loc = useLocation().pathname
+  const slct="text-white border-2 border-green-700 "
+  const other="text-gray-500 border-2 border-gray-300 "
+  const [timg,setTimg]=useState(slct)
+  const [taudio,setTaudio]=useState(other)
   const [load, setLoad] = useState(false)
   const [input, setInput] = useState("")
   const [speehc, setSpeehc] = useState('');
   const [recognition, setRecognition] = useState(null);
   let u
   const [micon, setMicon] = useState(false)
+  const [imageUrl, setImageUrl] = useState('');
+  const [mode,setMode]=useState('text2img')
   //input button logic
   const inputQuery = (e) => {
     console.log(input)
@@ -38,6 +45,12 @@ export default function Avaz() {
 
   }
 
+    const handleDownload = () => {
+      const downloadLink = document.createElement('a');
+      downloadLink.href = imageUrl;
+      downloadLink.download = 'image.jpg';
+      downloadLink.click();
+    };
   //.................Speech--To--Text API's Codes SECTION Start.....................................
   var v
   useEffect(() => {
@@ -88,6 +101,22 @@ export default function Avaz() {
 
 
   //.................Speech API's Codes SECTION End.....................................
+  //.................Smenu mode switcher start.....................................
+  const texttoimg=()=>{
+    setMode('text2img')
+    setTimg(slct)
+    setTaudio(other)
+
+  }
+  const texttoaudio=()=>{
+    setMode('text2audio')
+    setTimg(other)
+    setTaudio(slct)
+  }
+
+
+
+  //.................Smenu mode switcher end.....................................
 
 
   //.................Text--To--Speech API's Codes SECTION Start.....................................
@@ -137,7 +166,7 @@ export default function Avaz() {
   //.................Backend API's Codes SECTION Start.....................................
 
   //send function
-  const send = async (e) => {
+   const send = async (e) => {
     // e.preventDefault()
     let CHATS_DivUser = document.getElementById("chats");
 
@@ -146,12 +175,13 @@ export default function Avaz() {
     let eleU_A = document.createElement('button')
     let edit = <MdOutlineEdit title='edit' className=' ' />
     ReactDOM.render(edit, eleU_A)
-    eleU.className += "USER outline-none float-right relative group text-xl  self-end m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words font-semibold bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
+    eleU.className += "USER outline-none float-right relative group text-xl max-[768px]:text-md  self-end m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words font-semibold bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
     eleU_A.className += " text-white absolute top-[100%] right-0 p-4 group-hover:block hidden opacity-50 hover:opacity-100 text-lg"
     eleU.innerText = input
 
     eleU.appendChild(eleU_A)
     // CHATS_DivUser.appendChild(eleU)
+    
     CHATS_DivUser.insertBefore(eleU,CHATS_DivUser.lastChild)
 
 
@@ -170,7 +200,10 @@ export default function Avaz() {
     let eleA_1 = document.createElement('span')
     let eleA_2 = document.createElement('div')
     let sub_div = document.createElement('div')
-    let a = <HiOutlineSpeakerWave className="opacity-50 hover:opacity-100 cursor-pointer   " onClick={() => { textTospeexh(eleA) }} />
+    let player= document.createElement('ReactPlayer')
+   
+    let a="";
+    // let a = <HiOutlineSpeakerWave className="opacity-50 hover:opacity-100 cursor-disable   " onClick={() => { textTospeexh(eleA) }} />
     let b = < >
       <div className=' text-white flex items-cente justify-center h-auto text-center my-2   ' title=''>
         <span className='opacity-50 hover:opacity-100 cursor-pointer'>
@@ -182,43 +215,101 @@ export default function Avaz() {
         </span>
 
       </div>
-      <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='copy' onClick={() => { copy(eleA) }}><MdContentCopy /></div>
+      <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='copy' onClick={handleDownload}><MdDownload/></div>
       <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='reload' onClick={() => { regenrate(eleU, eleA) }}><TbReload /></div>
     </>
-    eleA.className += "AVAZ relative leading-5 z-0 text-xl group float-left bg-white self-start m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
+    eleA.className += "AVAZ relative z-0 alignitem-center group float-left bg-[#111111] self-start m-4  w-[50%] flex justify-center whitespace-break-spaces break-words shadow-xl border-2 border-[#121212] max-[768px]:p-1 p-[8px] max-[768px]:w-[80%]  rounded-[15px] "
     // eleA_2.classList.add("absolute","right-2","bottom-2")
     // eleA.setAttribute='ref'
-  
+   
     eleA_2.classList.add("float-end", "leading-snug")
     // sub_div.classList.add("hidden","group-hover:block","absolute","top-[100%]","rounded-sm","bg-white","flex")
     sub_div.className += "hidden  group-hover:grid grid-flow-col gap-4 w-auto boder   justify-between absolute right-0 flex items-center p-4 m-2  "
 
     ReactDOM.render(a, eleA_2)
     ReactDOM.render(b, sub_div)
+if(mode==="text2img"){
+  let imgs= document.createElement('img')
+  imgs.className+=" w-full h-full rounded-[15px]"
+  
+  imgs.alt+="my image"
+  try { 
+    setLoad(true)
+    const response = await axios.post(
+      'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0',
+      { inputs: u },
+      {
+        headers: {
+          Authorization: 'Bearer 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',
+        },
+        responseType: 'blob', // Specify response type as blob
+      }
+    );
+    setLoad(false)
+    const url = URL.createObjectURL(new Blob([response.data]));
+    imgs.src+=url;
+    setImageUrl(url);
+  } catch (error) {
+    console.error('Error fetching image:', error);
+  }
+  eleA.appendChild(imgs)
+  
+}else if(mode==="text2audio"){
+  try {
+    setLoad(true)
+    const response = await axios.post(
+      'https://api-inference.huggingface.co/models/facebook/musicgen-small',
+      { inputs: u },
+      {
+        headers: {
+          Authorization: 'Bearer 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',
+        },
+        responseType: 'arraybuffer',
+      }
+    ); setLoad(false)
+    const blob = new Blob([response.data], { type: 'audio/mp3' });
+    var url = URL.createObjectURL(blob);
+    eleA.innerHTML = ''; // Clear any previous content
+    const audioPlayer = document.createElement('audio');
+    audioPlayer.src = url;
+    audioPlayer.controls = true;
+    eleA.appendChild(audioPlayer);
+  } catch (error) {
+    console.error('Error generating audio:', error);
+  }
+}
+else{
+  console.log("jj ")
+}
 
 
     // let a = AVAZ AI.......${input}
     // eleA.innerText += await fetchPost(u)
-    let ans = await fetchPost(u)
-
+    // let ans = await fetchPost(u)
+    let ans = "dhdhh"
+    // my code start
+    
+// my code end
     // let ans = u
-    for (let i = 0; i < ans.length; i++) {
-      const element = ans[i];
-      // window.scrollTo(0, CHATS_DivUser.scrollHeight)
-      // end.current.scrollIntoView()
+    // text animation logic
+    // for (let i = 0; i < ans.length; i++) {
+    //   const element = ans[i];
+    //   // window.scrollTo(0, CHATS_DivUser.scrollHeight)
+    //   // end.current.scrollIntoView()
 
-      setTimeout(() => {
-        end.current.scrollIntoView()
-        eleA_1.innerText += element
+    //   setTimeout(() => {
+    //     end.current.scrollIntoView()
+    //     eleA_1.innerText += element
         
-      }, i * 20);
-      if (i == ans.length - 1) {
-        console.log("done");
-      }
+    //   }, i * 20);
+    //   if (i == ans.length - 1) {
+    //     console.log("done");
+    //   }
       
-    }
+    // }
 
-    eleA.appendChild(eleA_1)
+   
+    // eleA.appendChild(eleA_1)
     eleA.appendChild(eleA_2)
     eleA.appendChild(sub_div)
 
@@ -247,9 +338,10 @@ export default function Avaz() {
 
     setInput("")
     let eleA = document.createElement("div")
-    eleA.className += "AVAZ float-left self-start m-4 w-[40%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
+    eleA.className += "AVAZ float-left self-start m-4  w-[40%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl max-[768px]:p-3 rounded-ss-2xl "
     // let a = AVAZ AI.......${input}
-    eleA.innerText += await fetchPost(u)
+    // eleA.innerText += await fetchPost(u)
+    eleA.innerText += "hh"
     // eleA.innerHTML += u
     CHATS_DivUser.appendChild(eleA)
   };
@@ -356,7 +448,7 @@ useEffect(()=>{
 
         <div className={`SIDE-NAV bordr relative z-50 bg-[rgb(22,23,25)]   transition-all delay-100 duration-100   bordr-black w-[18%] h-full flex flex-col items-center p-4 space-y-8 bg-opacity-80 max-[768px]:bg-opacity-100 bg-emerald00 shadw-2xl  max-[768px]:absolute
              max-[768px]:${open ? 'translate-x-[0px]' : '-translate-x-[200px]'}`}>
-          <button className=' absolute right-0 p-2 text-white md:hidden ' onClick={menu}><IoClose /></button>
+          <button className=' absolute right-3 w-16 h-16 p-2 text-red-600 md:hidden ' onClick={menu}><IoClose /></button>
 
           <div className=' w-5/6 grid grid-flow-col items-center font-bold text-[#3FDD79]'>
             <Link to='/'>
@@ -427,7 +519,7 @@ useEffect(()=>{
                 {/* <input type='text' className=' w-[85%] h-60 text-xl text-neutral-400 outline-none bg-[rgb(22,23,25)]  ' onChange={inputQuery} value={input} placeholder='Ask Query' /> */}
                 <textarea className='w-[85%]    max-h-20  text-lg text-neutral-400 outline-none bg-[rgb(22,23,25)] resize-none ' rows={1} onChange={inputQuery} value={input} placeholder='Ask Query' onKeyUp={increaseHieght}>
                 </textarea>
-                <button className=' text-xl text-white p-2 rounded-2xl hover:bg-neutral-800 cursor-pointer ' disabled={input.length == 0} onClick={send}><IoSend /></button>
+                <button className=' text-xl text-red p-2 rounded-2xl hover:bg-neutral-800 cursor-pointer ' disabled={input.length == 0} onClick={send}><IoSend /></button>
               </div>
             </div>
 
@@ -445,8 +537,9 @@ useEffect(()=>{
             <button className=' md:hidden absolute top-[50%] -left-4 text-white ' onClick={history}><IoMdArrowDropleft /></button>
             <div className='DIFFERENT-AI-MODELS-BTNS flex flex-col gap-5 p-4  '>
                 <h1 className=' text-white text-xl'>ALL MODELS</h1>
-            <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-start gap-2 p-2'> <RiImageEditLine/>Text to Image</button>
-            <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-start gap-2 p-2 '><IoImageOutline/>Image to Image</button>
+            <button className={`  rounded-xl text-xl text-center h-12 ${timg} flex items-center justify-start gap-2 p-2`} onClick={texttoimg}> <RiImageEditLine/>Text to Image</button>
+            <button className={`  rounded-xl text-xl text-center h-12  flex items-center justify-start gap-2 p-2 ${taudio}`}
+             onClick={texttoaudio}><IoImageOutline/>Image to Image</button>
             <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-center gap-2'>Image to text</button>
             <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-center gap-2'>Image to text</button>
             

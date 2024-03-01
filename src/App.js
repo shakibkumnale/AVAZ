@@ -15,6 +15,7 @@ import NoteState from './context/NodeState'
 import Jar from './components/jarvis';
 import Jar2 from './components/imgtext';
 import Avaz from './components/AVAZ';
+import Objdetec from './components/objdetect';
 
 
 
@@ -26,7 +27,7 @@ function App() {
       <NoteState>
       <Router>
         
-      <Navbar/>
+      {/* <Navbar/> */}
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/contact' element={<Contact/>}/>
@@ -37,6 +38,8 @@ function App() {
           <Route path='/jar' element={<Jar/>}/>
           <Route path='/jar' element={<Jar2/>}/>
           <Route path='/AVAZ' element={<Avaz/>}/>
+          <Route path='/obj' element={<Objdetec/>}/>
+
           
           
 
@@ -46,7 +49,7 @@ function App() {
           
 
         </Routes>
-        <Footer/>
+        {/* <Footer/> */}
       </Router>
       </NoteState>
     </div>
