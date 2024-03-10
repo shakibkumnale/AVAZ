@@ -38,8 +38,8 @@ const ObjectDetectionComponent = () => {
 
   return (
     <div style={{ position: 'relative', display: 'inline-block' }}>
-      <input type="file" accept="image/*" onChange={handleFileChange} />
-      {imageSrc && <img src={imageSrc} alt="Uploaded" style={{ maxWidth: '100%', maxHeight: '400px' }} />}
+      
+      {imageSrc && <img src={imageSrc} alt="Uploaded" style={{ maxWidth: '100%', maxHeight: '100%' }} />}
       {objects.map((object, index) => (
         <div
           key={index}
@@ -59,6 +59,7 @@ const ObjectDetectionComponent = () => {
           )}
         </div>
       ))}
+      <input type="file" accept="image/*" onChange={handleFileChange} />
     </div>
   );
 };

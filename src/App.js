@@ -12,11 +12,11 @@ import SignLog from './components/SignLog';
 import Profile from './components/Profile';
 import Auth from './components/Auth';
 import NoteState from './context/NodeState'
-import Jar from './components/jarvis';
+import Jar from './components/jarvisbot';
 import Jar2 from './components/imgtext';
 import Avaz from './components/AVAZ';
 import Objdetec from './components/objdetect';
-
+import ErrorPage from './components/ErrorPage';
 
 
 
@@ -36,9 +36,11 @@ function App() {
           <Route path='/ai' element={<Auth Component={ChatbotNew}/>}/>
           <Route path='/sign' element={<SignLog/>}/>
           <Route path='/jar' element={<Jar/>}/>
-          <Route path='/jar' element={<Jar2/>}/>
+          {/* <Route path='/jar' element={<Jar2/>}/> */}
           <Route path='/AVAZ' element={<Avaz/>}/>
           <Route path='/obj' element={<Objdetec/>}/>
+          <Route path='/*' element={<ErrorPage/>}/>
+
 
           
           

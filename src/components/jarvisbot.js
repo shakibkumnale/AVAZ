@@ -4,39 +4,27 @@ import { FiMenu } from "react-icons/fi";
 import { LuUserCircle2 } from "react-icons/lu";
 import { Link, useLocation } from 'react-router-dom';
 import { BsRobot } from "react-icons/bs";
-import { FaDownload, FaHome,FaMicrophoneAlt } from "react-icons/fa";
+import { FaHome,FaMicrophoneAlt } from "react-icons/fa";
 import { TiContacts,TiDocumentText } from "react-icons/ti";
 import { FcAbout } from "react-icons/fc";
 import { IoSend,IoSearch,IoClose } from "react-icons/io5";
 import axios from "axios"
-import ReactPlayer from 'react-player';
 import { IoMdArrowDropleft,IoIosArrowBack,IoIosArrowForward } from "react-icons/io";
 import Loader from './Loader';
 import micGif from './googleVoice.gif'
-import { MdContentCopy,MdDownload,MdOutlineEdit } from "react-icons/md";
+import { MdContentCopy,MdOutlineEdit } from "react-icons/md";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { TbReload } from "react-icons/tb";
 import { RiImageEditLine } from "react-icons/ri";
 import { IoImageOutline } from "react-icons/io5";
 export default function Avaz() {
   const loc = useLocation().pathname
-  const slct="text-white border-2 border-green-700 "
-  const other="text-gray-500 border-2 border-gray-300 "
-  const [timg,setTimg]=useState(slct)
-  const [taudio,setTaudio]=useState(other)
   const [load, setLoad] = useState(false)
   const [input, setInput] = useState("")
-  const [dis, setDis] = useState("")
-  const [imgin, setImgin] = useState("")
   const [speehc, setSpeehc] = useState('');
   const [recognition, setRecognition] = useState(null);
   let u
-  const [imageSrc, setImageSrc] = useState('');
-  const [objects, setObjects] = useState([]);
-  const [hoveredObject, setHoveredObject] = useState(null);
   const [micon, setMicon] = useState(false)
-  const [imageUrl, setImageUrl] = useState('');
-  const [mode,setMode]=useState('text2img')
   //input button logic
   const inputQuery = (e) => {
     console.log(input)
@@ -50,12 +38,6 @@ export default function Avaz() {
 
   }
 
-    const handleDownload = () => {
-      const downloadLink = document.createElement('a');
-      downloadLink.href = imageUrl;
-      downloadLink.download = 'image.jpg';
-      downloadLink.click();
-    };
   //.................Speech--To--Text API's Codes SECTION Start.....................................
   var v
   useEffect(() => {
@@ -106,53 +88,6 @@ export default function Avaz() {
 
 
   //.................Speech API's Codes SECTION End.....................................
-  //.................Smenu mode switcher start.....................................
-  const texttoimg=()=>{
-    setMode('text2img')
-    setTimg(slct)
-    setTaudio(other)
-
-  }
-  const texttoaudio=()=>{
-    setMode('text2audio')
-    setTimg(other)
-    setTaudio(slct)
-  }
-
-  
-  //.................Smenu mode switcher end.....................................
-
-  //.................SObkect detecter start.....................................
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = async (event) => {
-      setImageSrc(event.target.result);
-      try {
-        const data = event.target.result.split(',')[1]; // Get base64 image data
-        const response = await fetch('https://api-inference.huggingface.co/models/facebook/detr-resnet-50', {
-          headers: { Authorization: 'Bearer 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', 'Content-Type': 'application/json' },
-          method: 'POST',
-          body: JSON.stringify({ inputs: data }),
-        });
-        const result = await response.json();
-        setObjects(result);
-      } catch (error) {
-        console.error('Error detecting objects:', error);
-      }
-    };
-
-    reader.readAsDataURL(file);
-  };
-  const handleMouseOver = (object) => {
-    setHoveredObject(object);
-  };
-
-  const handleMouseOut = () => {
-    setHoveredObject(null);
-  };
-  //.................SObkect detecter end.....................................
 
 
   //.................Text--To--Speech API's Codes SECTION Start.....................................
@@ -202,7 +137,7 @@ export default function Avaz() {
   //.................Backend API's Codes SECTION Start.....................................
 
   //send function
-   const send = async (e) => {
+  const send = async (e) => {
     // e.preventDefault()
     let CHATS_DivUser = document.getElementById("chats");
 
@@ -211,13 +146,12 @@ export default function Avaz() {
     let eleU_A = document.createElement('button')
     let edit = <MdOutlineEdit title='edit' className=' ' />
     ReactDOM.render(edit, eleU_A)
-    eleU.className += "USER outline-none float-right relative group text-xl max-[768px]:text-md  self-end m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words font-semibold bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
+    eleU.className += "USER outline-none float-right relative group text-xl  self-end m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words font-semibold bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
     eleU_A.className += " text-white absolute top-[100%] right-0 p-4 group-hover:block hidden opacity-50 hover:opacity-100 text-lg"
     eleU.innerText = input
 
     eleU.appendChild(eleU_A)
     // CHATS_DivUser.appendChild(eleU)
-    
     CHATS_DivUser.insertBefore(eleU,CHATS_DivUser.lastChild)
 
 
@@ -236,10 +170,7 @@ export default function Avaz() {
     let eleA_1 = document.createElement('span')
     let eleA_2 = document.createElement('div')
     let sub_div = document.createElement('div')
-    let player= document.createElement('ReactPlayer')
-   
-    let a="";
-    // let a = <HiOutlineSpeakerWave className="opacity-50 hover:opacity-100 cursor-disable   " onClick={() => { textTospeexh(eleA) }} />
+    let a = <HiOutlineSpeakerWave className="opacity-50 hover:opacity-100 cursor-pointer   " onClick={() => { textTospeexh(eleA) }} />
     let b = < >
       <div className=' text-white flex items-cente justify-center h-auto text-center my-2   ' title=''>
         <span className='opacity-50 hover:opacity-100 cursor-pointer'>
@@ -251,101 +182,114 @@ export default function Avaz() {
         </span>
 
       </div>
-      <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='copy' onClick={handleDownload}><MdDownload/></div>
+      <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='copy' onClick={() => { copy(eleA) }}><MdContentCopy /></div>
       <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='reload' onClick={() => { regenrate(eleU, eleA) }}><TbReload /></div>
     </>
-    eleA.className += "AVAZ relative z-0 alignitem-center group float-left bg-[#111111] self-start m-4  w-[50%] flex justify-center whitespace-break-spaces break-words shadow-xl border-2 border-[#121212] max-[768px]:p-1 p-[8px] max-[768px]:w-[80%]  rounded-[15px] "
+    eleA.className += "AVAZ relative leading-5 z-0 text-xl group float-left bg-white self-start m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
     // eleA_2.classList.add("absolute","right-2","bottom-2")
     // eleA.setAttribute='ref'
-   
+  
     eleA_2.classList.add("float-end", "leading-snug")
     // sub_div.classList.add("hidden","group-hover:block","absolute","top-[100%]","rounded-sm","bg-white","flex")
     sub_div.className += "hidden  group-hover:grid grid-flow-col gap-4 w-auto boder   justify-between absolute right-0 flex items-center p-4 m-2  "
 
     ReactDOM.render(a, eleA_2)
     ReactDOM.render(b, sub_div)
-if(mode==="text2img"){
-  let imgs= document.createElement('img')
-  imgs.className+=" w-full h-full rounded-[15px]"
-  
-  imgs.alt+="my image"
-  try { 
-    setLoad(true)
-    const response = await axios.post(
-      'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0',
-      { inputs: u },
-      {
-        headers: {
-          Authorization: 'Bearer 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',
-        },
-        responseType: 'blob', // Specify response type as blob
-      }
-    );
-    setLoad(false)
-    const url = URL.createObjectURL(new Blob([response.data]));
-    imgs.src+=url;
-    setImageUrl(url);
-  } catch (error) {
-    console.error('Error fetching image:', error);
-  }
-  eleA.appendChild(imgs)
-  
-}else if(mode==="text2audio"){
-  try {
-    setLoad(true)
-    const response = await axios.post(
-      'https://api-inference.huggingface.co/models/facebook/musicgen-small',
-      { inputs: u },
-      {
-        headers: {
-          Authorization: 'Bearer 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',
-        },
-        responseType: 'arraybuffer',
-      }
-    ); setLoad(false)
-    const blob = new Blob([response.data], { type: 'audio/mp3' });
-    var url = URL.createObjectURL(blob);
-    eleA.innerHTML = ''; // Clear any previous content
-    const audioPlayer = document.createElement('audio');
-    audioPlayer.src = url;
-    audioPlayer.controls = true;
-    eleA.appendChild(audioPlayer);
-  } catch (error) {
-    console.error('Error generating audio:', error);
-  }
-}
-else{
-  console.log("jj ")
-}
+  // xx------------------------**jarvis start**------------------------------------------xx
+    let ans ;
+  console.log("s"+u)
 
+  if (u.includes("play")) {
+    let playStr = u.split("");
+    playStr.splice(0, 5);
+    let videoName = playStr.join("");
+    playStr = playStr.join("").split(" ").join("+");
+    readOut(`searching youtube for ${videoName}`);
+    ans=`searching youtube for ${videoName}`;
+    let a = window.open(`https://www.youtube.com/search?q=${playStr}`);
+    // windowsB.push(a)
+  }
+  if (u.includes("open instagram")) {
+    readOut("opening instagram sir");
+    let a =window.open("https://www.instagram.com");
+    // windowsB.push(a)
+  }
+
+if (u.includes("open calendar")) {
+  console.log(u)
+      readOut("opening calendar");
+      ans="opening calendar"
+      let a = window.open("https://calendar.google.com/");
+      // windowsB.push(a)
+    }
+    if (u.includes("open instagram")) {
+      readOut("opening instagram sir");
+      ans="opening instagram sir"
+            let a =window.open("https://www.instagram.com");
+      // windowsB.push(a)
+    }
+    if (u.includes("write tweet on ")) {
+      // readOut("opening twitter sir");
+       ans = await fetchPost(u)
+      const urlEnStr = await encodeURIComponent(ans);
+      let a = window.open(`https://twitter.com/intent/post?text=${urlEnStr}`);
+      // let a = window.open(`https://twitter.com/`);
+      // windowsB.push(a)
+    }
+    if (u.includes("open youtube")) {
+      readOut("opening youtube sir");
+      ans="opening youtube sir"
+      let a = window.open("https://www.youtube.com/");
+      // windowsB.push(a)
+    }
+    if (u.includes("open github")) {
+      readOut("opening github");
+      ans="opening github"
+
+      let a = window.open("https://github.com/");
+      // windowsB.push(a)
+    }
+    
+
+    if (u.includes("search for")) {
+      let inputg = u.split("");
+      
+      inputg.splice(0, 11);
+      inputg.pop();
+      ans=`searching for ${inputg.join("").split(" ").join(" ")}`
+      readOut(ans);
+      inputg = inputg.join("").split(" ").join("+");
+      let a = window.open(`https://www.google.com/search?q=${inputg}`);
+      readOut("here's your result");
+
+      // windowsB.push(a)
+    }
+
+
+
+    // xx------------------------**jarvis start**------------------------------------------xx
 
     // let a = AVAZ AI.......${input}
     // eleA.innerText += await fetchPost(u)
-    // let ans = await fetchPost(u)
-    let ans = "dhdhh"
-    // my code start
-    
-// my code end
+
     // let ans = u
-    // text animation logic
-    // for (let i = 0; i < ans.length; i++) {
-    //   const element = ans[i];
-    //   // window.scrollTo(0, CHATS_DivUser.scrollHeight)
-    //   // end.current.scrollIntoView()
+    for (let i = 0; i < ans.length; i++) {
+      const element = ans[i];
+      // window.scrollTo(0, CHATS_DivUser.scrollHeight)
+      // end.current.scrollIntoView()
 
-    //   setTimeout(() => {
-    //     end.current.scrollIntoView()
-    //     eleA_1.innerText += element
+      setTimeout(() => {
+        end.current.scrollIntoView()
+        eleA_1.innerText += element
         
-    //   }, i * 20);
-    //   if (i == ans.length - 1) {
-    //     console.log("done");
-    //   }
+      }, i * 20);
+      if (i == ans.length - 1) {
+        console.log("done");
+      }
       
-    // }
+    }
 
-   
-    // eleA.appendChild(eleA_1)
+    eleA.appendChild(eleA_1)
     eleA.appendChild(eleA_2)
     eleA.appendChild(sub_div)
 
@@ -374,10 +318,9 @@ else{
 
     setInput("")
     let eleA = document.createElement("div")
-    eleA.className += "AVAZ float-left self-start m-4  w-[40%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl max-[768px]:p-3 rounded-ss-2xl "
+    eleA.className += "AVAZ float-left self-start m-4 w-[40%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
     // let a = AVAZ AI.......${input}
-    // eleA.innerText += await fetchPost(u)
-    eleA.innerText += "hh"
+    eleA.innerText += await fetchPost(u)
     // eleA.innerHTML += u
     CHATS_DivUser.appendChild(eleA)
   };
@@ -407,7 +350,7 @@ else{
   const fetchPost = async (query) => {
     try {
       setLoad(true)
-      const res = await axios.post("http://localhost:3001/POST", { query })
+      const res = await axios.post("http://192.168.1.210:3001/POST", { query })
       setLoad(false)
       console.log(res)
       return res.data
@@ -427,7 +370,7 @@ else{
     e.target.style.height = 'auto'
     let key = e.key
 
-    e.target.style.height = `${e.target.scrollHeight}+px`;
+    e.target.style.height =`${e.target.scrollHeight}px`;
     if (key === 'Enter') {
       // e.target.style.overflowY='hidden'
 
@@ -438,6 +381,18 @@ else{
   }
 
 
+  //.................Bead SECTION start.....................................
+  
+  function readOut(message) {
+  const speech = new SpeechSynthesisUtterance();
+  speech.text = message;
+  speech.volume = 1;
+  window.speechSynthesis.speak(speech);
+  console.log("Speaking out");
+  // createMsg("jmsg", message);
+}
+  
+  //.................Bead SECTION End.....................................
   //.................Backend API's Codes SECTION End.....................................
 
  
@@ -484,7 +439,7 @@ useEffect(()=>{
 
         <div className={`SIDE-NAV bordr relative z-50 bg-[rgb(22,23,25)]   transition-all delay-100 duration-100   bordr-black w-[18%] h-full flex flex-col items-center p-4 space-y-8 bg-opacity-80 max-[768px]:bg-opacity-100 bg-emerald00 shadw-2xl  max-[768px]:absolute
              max-[768px]:${open ? 'translate-x-[0px]' : '-translate-x-[200px]'}`}>
-          <button className=' absolute right-3 w-16 h-16 p-2 text-red-600 md:hidden ' onClick={menu}><IoClose /></button>
+          <button className=' absolute right-0 p-2 text-white md:hidden ' onClick={menu}><IoClose /></button>
 
           <div className=' w-5/6 grid grid-flow-col items-center font-bold text-[#3FDD79]'>
             <Link to='/'>
@@ -536,39 +491,7 @@ useEffect(()=>{
                 </div>
               </p>
             </div>
-            {/*relative* space-y-8  scroll-auto  p-4 flex flex-col px-[10%] pb-[4%]*/} 
-            <div className='CHATS w-full h-full bordr-8     overflow-auto ' id='chats'>
-            <div className='CHATS  realtive  border-8 border-red-600 'style={{ position: 'relative', display: 'inline-block' }} id='chats'>
-         
-           
-            {imageSrc && <img   src={imageSrc} alt="Uploaded" style={{ maxWidth: '100%', maxHeight: '100%' }} />}
-      {objects.map((object, index) => (
-        <div
-          key={index}
-          className="absolute border-2 border-transparent transition-colors duration-300 hover:border-red-500"
-          style={{
-            left: object.box.xmin,
-            top: object.box.ymin,
-            width: object.box.xmax - object.box.xmin,
-            height: object.box.ymax - object.box.ymin,
-            // pointerEvents: 'none', // Prevent the box from blocking mouse events on the image
-          }}
-          onMouseEnter={() => handleMouseOver(object)}
-          onMouseLeave={handleMouseOut}
-        >
-          {hoveredObject === object && (
-            <div className="absolute top-0 left-0 bg-white text-black p-1">{object.label}</div>
-          )}
-        </div>
-      ))}
-</div>
-              
-              
-                       
-
-
-
-
+            <div className='CHATS relative scroll-auto   w-full h-full bordr-8 flex flex-col px-[10%] pb-[4%]    overflow-auto space-y-8 p-4 ' id='chats'>
               {/* <button onClick={()=>{end.current.scrollIntoView()}}>okkk</button> */}
               {/* <div className="USER relative flex float-right self-end m-4 w-[40%] whitespace-break-spaces break-words bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl ">
             <button className=' float-end absolute end-0 bottom-0'>
@@ -581,17 +504,17 @@ useEffect(()=>{
 
 
             </div>
-       {false &&     <div className='INPUT w-full h-36 p-4 border-t border-neutral-700 max-md:h-20 items-center flex  '>
+            <div className='INPUT w-full h-36 p-4 border-t border-neutral-700 max-md:h-20 items-center flex  '>
               <div className='INPUT-BAR max-h-24 bordr-2 bg-[rgb(22,23,25)] w-[80%] flex flex-row justify-between  items-end   px-2 space-x-1 rounded-xl  m-auto p-2 shadow-lg   '>
-                <button disabled={dis} className=' text-xl  text-white p-2 rounded-2xl hover:bg-neutral-800 ' onClick={VoiceInputQuery}><FaMicrophoneAlt /></button>
+                <button className=' text-xl  text-white p-2 rounded-2xl hover:bg-neutral-800 ' onClick={VoiceInputQuery}><FaMicrophoneAlt /></button>
                 {/* <input type='text' className=' w-[85%] h-60 text-xl text-neutral-400 outline-none bg-[rgb(22,23,25)]  ' onChange={inputQuery} value={input} placeholder='Ask Query' /> */}
-                <textarea disabled={dis} className='w-[85%]    max-h-20  text-lg text-neutral-400 outline-none bg-[rgb(22,23,25)] resize-none ' rows={1} onChange={inputQuery} value={input} placeholder='Ask Query' onKeyUp={increaseHieght}>
+                <textarea className='w-[85%]    max-h-20  text-lg text-neutral-400 outline-none bg-[rgb(22,23,25)] resize-none ' rows={1} onChange={inputQuery} value={input} placeholder='Ask Query' onKeyUp={increaseHieght}>
                 </textarea>
-                <button  className=' text-xl text-red p-2 rounded-2xl hover:bg-neutral-800 cursor-pointer ' disabled={input.length == 0} onClick={send}><IoSend /></button>
+                <button className=' text-xl text-white p-2 rounded-2xl hover:bg-neutral-800 cursor-pointer ' disabled={input.length == 0} onClick={send}><IoSend /></button>
               </div>
             </div>
 
-          }
+
 
             {/* extra design below
             <div className='INPUT-BAR border-2 absolute bottom-[5%]   w-[80%] flex flex-row justify-between   px-2 space-x-1 rounded-xl  m-auto p-2 shadow-lg bg-white    '>
@@ -605,24 +528,10 @@ useEffect(()=>{
             <button className=' md:hidden absolute top-[50%] -left-4 text-white ' onClick={history}><IoMdArrowDropleft /></button>
             <div className='DIFFERENT-AI-MODELS-BTNS flex flex-col gap-5 p-4  '>
                 <h1 className=' text-white text-xl'>ALL MODELS</h1>
-            <button className={`  rounded-xl text-xl text-center h-12 ${timg} flex items-center justify-start gap-2 p-2`} onClick={texttoimg}> <RiImageEditLine/>Text to Image</button>
-            <button className={`  rounded-xl text-xl text-center h-12  flex items-center justify-start gap-2 p-2 ${taudio}`}
-             onClick={texttoaudio}><IoImageOutline/>Image to Image</button>
+            <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-start gap-2 p-2'> <RiImageEditLine/>Text to Image</button>
+            <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-start gap-2 p-2 '><IoImageOutline/>Image to Image</button>
             <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-center gap-2'>Image to text</button>
             <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-center gap-2'>Image to text</button>
-            <div class=" absolute bottom-8   flex items-center justify-center w-[80%]  ">
-    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-        <div class="flex flex-col items-center justify-center pt-5 pb-6">
-            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-            </svg>
-            <p class="mb-2 text-sm text-center align-center text-gray-500 dark:text-gray-400"><span class="font-semibold ">Click to upload</span> or drag and drop</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 text-center align-center">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-        </div>
-        {/* <input id="dropzone-file" type="file" class="hidden" /> */}
-        <input id="dropzone-file" type="file" accept="image/*" onChange={handleFileChange} />
-    </label>
-</div> 
             
             {/* img btn remainig */}
             
