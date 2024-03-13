@@ -17,6 +17,7 @@ import Jar2 from './components/imgtext';
 import Avaz from './components/AVAZ';
 import Objdetec from './components/objdetect';
 import ErrorPage from './components/ErrorPage';
+import Forget from './components/Forget';
 
 
 
@@ -27,7 +28,7 @@ function App() {
       <NoteState>
       <Router>
         
-      {/* <Navbar/> */}
+      <Navbar/>
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/contact' element={<Contact/>}/>
@@ -40,6 +41,7 @@ function App() {
           <Route path='/AVAZ' element={<Avaz/>}/>
           <Route path='/obj' element={<Objdetec/>}/>
           <Route path='/*' element={<ErrorPage/>}/>
+          <Route path='/forgot' element={<Forget/>}/>
 
 
           

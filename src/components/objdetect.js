@@ -20,6 +20,7 @@ const ObjectDetectionComponent = () => {
         });
         const result = await response.json();
         setObjects(result);
+        console.log(result);
       } catch (error) {
         console.error('Error detecting objects:', error);
       }

@@ -350,7 +350,9 @@ if (u.includes("open calendar")) {
   const fetchPost = async (query) => {
     try {
       setLoad(true)
-      const res = await axios.post("http://192.168.1.210:3001/POST", { query })
+      // const res = await axios.post("http://192.168.1.210:3001/POST", { query })
+      const res = await axios.post("http://localhost:3001/POST", { query })
+
       setLoad(false)
       console.log(res)
       return res.data

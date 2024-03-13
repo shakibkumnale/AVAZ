@@ -2,15 +2,15 @@ import React, { useState } from 'react'
 import Pop1l from './Pop1l'
 import { useContext } from 'react'
 import noteContext from "../context/noteContext";
-
-
 import { Link, useLocation } from 'react-router-dom'
 import { FiMenu } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
+import Cookies from 'js-cookie';
+import axios from 'axios';
 export default function() {
     // const windowSize = useRef([window.innerWidth, window.innerHeight]);
     const access=useContext(noteContext)
- 
+    // console.log(accessx  .);
     const location=useLocation().pathname;
     const [bgcolor, setbgcolor] = useState("red")
     const [fgcolor, setfgcolor] = useState("white")
@@ -38,15 +38,48 @@ export default function() {
     const Clicks = () => {
         setopen(!open)
     }
+
+    const Logout= async()=>{
+        const Cget=Cookies.get('user')
+        try {
+
+                alert("current device logout")
+                Cookies.remove('user')
+                access.logout()
+            const cookieVerification =await axios.post("http://localhost:3001/logout",{Cget});
+  console.log(cookieVerification.data);
+  
+//   context.update(cookieVerification.data);
+            
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const AllLogout= async()=>{
+        const Cget=Cookies.get('user')
+            try {
+                alert("all device logout")
+                Cookies.remove('user')
+                access.logout()
+            const cookieVerification =await axios.post("http://localhost:3001/alllogout",{Cget});
+  console.log(cookieVerification.data);
+  
+            } catch (error) {
+            console.log(error);
+                
+            }
+    }
     return (
         <>
             <Pop1l poplog={pop} onChange={(value)=>setPop(value)}/>
         {
-            location!="/ai" && location!="/Avaz"  &&
+            (location!="/ai" && location!="/new" && location!="/new1" && location!="/AVAZ")  &&
 
                     
                 //navbar  for device greater than 768px 
-            <div className='relative'>
+            <div className='relative z-50'>
                 <div className='NAVBAR flex justify-between  pl-10 pr-5 text-xl h-16  shadow-md items-center w-full max-[768px]:px-8 relative'>
                     <div className='LOGO text-3xl font-bold  '>
                         <Link to='/'>AvAz</Link>
@@ -74,10 +107,16 @@ export default function() {
                             }
                             { access.state.Token &&
                    <div  className='profile right-2 flex justify-end items-center w-56 h-full'>
+                    <div className=' flex'>
+                        <button onClick={Logout}>Logout</button>
+                        <button onClick={AllLogout}>Logout All</button>
+
+                    </div>
                         <div className='fname  items-center  text-2xl bold font-serif  h-8 w-40 text-black flex justify-end mr-2'><span className='h-8 ' >{access.state.Fname}</span> </div>
                        <Link to='/profile'>
                         <div className='img w-12 h-12 items-center my-auto border-2 border-black rounded-full'><img className='w-full h-full rounded-full ' src='http://192.168.1.208:3000/dp.png'></img>
                         </div></Link>
+
                     </div>
                         }
                     {open &&

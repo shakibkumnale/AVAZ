@@ -230,8 +230,7 @@ export default function Avaz() {
     let eleU = document.createElement("div");
     eleU.setAttribute("disabled", "true");
     let eleU_A = document.createElement("button");
-    let edit = <MdOutlineEdit title="edit" className=" " />;
-    ReactDOM.render(edit, eleU_A);
+   
     eleU.className +=
       "USER rmc outline-none float-right relative group text-xl max-[768px]:text-md  self-end m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words font-semibold bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl ";
     eleU_A.className +=
