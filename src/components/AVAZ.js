@@ -151,22 +151,20 @@ export default function Avaz() {
     const reader = new FileReader();
 
     reader.onload = async (event) => {
+      console.log(event.target.result);
       setImageSrc(event.target.result);
-      try {
+      try {if(event.target.result){
         const data = event.target.result.split(",")[1]; // Get base64 image data
         const response = await fetch(
-          "https://api-inference.huggingface.co/models/facebook/detr-resnet-50",
-          {
-            headers: {
-              Authorization: "Bearer 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",
-              "Content-Type": "application/json",
-            },
+          "https://api-inference.huggingface.co/models/facebook/detr-resnet-101",
+		{
+			headers: { Authorization: "Bearer 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" },
             method: "POST",
             body: JSON.stringify({ inputs: data }),
           }
         );
         const result = await response.json();
-        setObjects(result);
+        setObjects(result);}
       } catch (error) {
         console.error("Error detecting objects:", error);
       }

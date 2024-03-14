@@ -17,7 +17,9 @@ import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { TbReload } from "react-icons/tb";
 import noteContext from '../context/noteContext';
 import Cookie from "js-cookie";
-export default function Avaz() {
+export default function Avaz(props) {
+  const {Email,Fname}=props.data;
+  // const {Fname, Lname, Email, Phone, City }=props.data;
   const access=useContext(noteContext)
   const loc = useLocation().pathname
   const [load, setLoad] = useState(false)
@@ -305,7 +307,7 @@ export default function Avaz() {
   const fetchPost = async (query) => {
     try {
       setLoad(true)
-      const res = await axios.post("http://localhost:3001/POST", { query })
+      const res = await axios.post("http://localhost:3001/POST", { query,Email })
       setLoad(false)
       console.log(res)
       return res.data

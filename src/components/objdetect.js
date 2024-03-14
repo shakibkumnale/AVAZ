@@ -13,14 +13,16 @@ const ObjectDetectionComponent = () => {
       setImageSrc(event.target.result);
       try {
         const data = event.target.result.split(',')[1]; // Get base64 image data
+        // const response = await fetch('https://api-inference.huggingface.co/models/facebook/detr-resnet-50', {
         const response = await fetch('https://api-inference.huggingface.co/models/facebook/detr-resnet-50', {
-          headers: { Authorization: 'Bearer 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', 'Content-Type': 'application/json' },
+          headers: { Authorization: 'Bearer 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', 'Content-Type': 'application/json' },
           method: 'POST',
           body: JSON.stringify({ inputs: data }),
         });
         const result = await response.json();
-        setObjects(result);
+        
         console.log(result);
+        setObjects(result);
       } catch (error) {
         console.error('Error detecting objects:', error);
       }
