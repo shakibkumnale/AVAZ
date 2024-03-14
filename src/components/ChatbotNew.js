@@ -215,7 +215,7 @@ export default function Avaz(props) {
 
     let chat_Div_U=document.createElement('div')
     chat_Div_U.innerText=u
-    ChatHist.current.appendChild(chat_Div_U)
+    // ChatHist.current.appendChild(chat_Div_U)
 
 
     // let a = `AVAZ AI.......${input}`
@@ -358,7 +358,7 @@ export default function Avaz(props) {
 
 
 const end=useRef(null)
-const ChatHist=useRef(null)
+// const ChatHist=useRef(null)
 useEffect(()=>{
   end.current.scrollIntoView()
 },)
@@ -385,8 +385,20 @@ const chatChange=useRef(null)
 
 var parentElement1 = document.querySelector('.CHATS');
 const Newchat=()=>{
-//   var childElement1 = parentElement1.querySelectorAll('.USER');
-console.log(chatChange.current.childNodes);
+ const hisDiv = event.currentTarget;
+
+  // Find the elements with the classes 'q' and 'ans' inside the 'his' div
+  const questionElement = hisDiv.querySelector('.q');
+  const answerElement = hisDiv.querySelector('.ans');
+
+  // Access the inner text of the found elements
+  const questionText = questionElement.textContent.trim();
+  const answerText = answerElement.textContent.trim();
+  
+
+  // Do something with the inner text, for example, log it to console
+  console.log('Question:', questionText);
+  console.log('Answer:', answerText);
 }
 
   return (
@@ -501,16 +513,18 @@ console.log(chatChange.current.childNodes);
           </div> */}
 
           </div>
-          <div ref={ChatHist} className={`HISTORY relative bg-[rgb(37,38,40)] z-50 bordr bordr-blue-500 w-[20%] h-full p-6 border-l border-neutral-700 transition-all delay-100 duration-100 max-[768px]:w-[90%]   max-[768px]:absolute right-0 max-[768px]:${openHist ? ' translate-x-0' : 'translate-x-full '}`}>
-            <button className=' md:hidden absolute top-[50%] -left-4 text-white ' onClick={history}><IoMdArrowDropleft /></button>
-            <div onClick={Newchat} className=' bg-[rgb(22,23,25)] text-neutral-400 CHAT_HISTORY w-full h-10 bordr flex items-center justify-between p-2 shadow-lg rounded-xl'>
-              <p>New Chat</p>
+          <div  className={`HISTORY relative bg-[rgb(37,38,40)] z-50 bordr bordr-blue-500 w-[27%] h-full p-6 border-l border-neutral-700 transition-all delay-100 duration-100 max-[768px]:w-[90%]   max-[768px]:absolute right-0 max-[768px]:${openHist ? ' translate-x-0' : 'translate-x-full '}`}>
+           
+           <div className=' top-0 w-full   p-2'><h1 className='text-3xl text-center justify-center text-white font-bold'>history</h1></div><hr className=' text-3xl bg-gray-400 text-gray-400  m-2 ml-0 w-full text-center '></hr>
+            <div onClick={Newchat} className=' text-lg px-4 py-2 overflow-hidden my-4 bg-[rgb(22,23,25)] text-neutral-400 CHAT_HISTORY w-full min-h-16 bordr flex items-center justify-between max-h-24 shadow-lg rounded-xl'>
+              <span className='overflow-hidden text-xl max-h-24  min-h-16 '>dhhhhhhhhhh</span>
+              <p hidden className='q'>lorem23
+   jdjksjdfj dfjdsjlfhgfs fsdlkjhfsd hfldaslhjdf sdfifdsjksf
+              </p>
+              <p hidden className='ans'> mgzkj;g sierpouks tevm niumax-h erpouks tevmniuma x-h-24max -h-24 erpouks tevmniumax-h-24max-h-24-24max-h-24 pwfkui f4npfukwi ifiuwkfr</p>
             
             </div>
-            <br />
-            <div ref={ChatHist} className='CHAT-History'>
-HISTORY
-            </div>
+           
           </div>
 
 
