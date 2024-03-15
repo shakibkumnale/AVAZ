@@ -384,7 +384,8 @@ const chatChange=useRef(null)
 
 
 var parentElement1 = document.querySelector('.CHATS');
-const Newchat=()=>{
+const Newchat=(event)=>{
+
  const hisDiv = event.currentTarget;
 
   // Find the elements with the classes 'q' and 'ans' inside the 'his' div
@@ -399,6 +400,82 @@ const Newchat=()=>{
   // Do something with the inner text, for example, log it to console
   console.log('Question:', questionText);
   console.log('Answer:', answerText);
+  // fhdsjhdjsfhkjsdfhjkdfs
+
+let CHATS_DivUser = document.getElementById("chats");
+
+let eleU = document.createElement('div')
+let editModal=<div className=' w-[50%] h-[50%] border bg-white'>
+  <textarea>edit</textarea>
+  <button>Save</button>
+  <button>Cancel</button>
+</div>
+
+
+
+eleU.setAttribute('disabled', 'true')
+let eleU_A = document.createElement('button')
+let edit = <MdOutlineEdit title='edit' className=' ' />
+ReactDOM.render(edit, eleU_A)
+eleU.className += "USER outline-none float-right relative group text-xl  self-end m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words font-semibold bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
+eleU_A.className += " text-white absolute top-[100%] right-0 p-4 group-hover:block hidden opacity-50 hover:opacity-100 text-lg"
+eleU.innerText = questionText
+
+eleU.appendChild(eleU_A)
+// CHATS_DivUser.appendChild(eleU)
+CHATS_DivUser.insertBefore(eleU,CHATS_DivUser.lastChild)
+
+let eleU_1=document.createElement('div')
+eleU_1.className+=' absolute top-[100%] right-[20%]'
+eleU_1.innerText="sdkfjjvkdfhvkrhvbkrhbv"
+// eleU.appendChild(eleU_1)
+u =questionText;
+let eleA = document.createElement("div")
+    let eleA_1 = document.createElement('span')
+ let eleA_2 = document.createElement('div')
+    let sub_div = document.createElement('div')
+    let a = <HiOutlineSpeakerWave className="opacity-50 hover:opacity-100 cursor-pointer mx-2   " onClick={() => { textTospeexh(eleA) }} />
+    let b = < >
+      <div className=' text-white flex items-cente justify-center h-auto text-center my-2   ' title=''>
+        <span className='opacity-50 hover:opacity-100 cursor-pointer'>
+          <IoIosArrowBack disabled />
+        </span>
+        <h1 className='opacity-50'>0</h1>
+        <span className='opacity-50 hover:opacity-100 cursor-pointer '>
+          <IoIosArrowForward />
+        </span>
+
+      </div>
+      <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='copy' onClick={() => { copy(eleA) }}><MdContentCopy /></div>
+      <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='reload' onClick={() => { regenrate(eleU, eleA) }}><TbReload /></div>
+    </>
+    eleA.className += "AVAZ relative leading-5 z-0 text-xl group float-left items-center gap-2 h-auto bg-white self-start m-4 min-w-[20%] px-4 w-auto max-w-[50%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
+    // eleA_2.classList.add("absolute","right-2","bottom-2")
+    // eleA.setAttribute='ref'
+  
+    eleA_2.classList.add("float-end", "leading-snug")
+    // sub_div.classList.add("hidden","group-hover:block","absolute","top-[100%]","rounded-sm","bg-white","flex")
+    sub_div.className += "hidden  group-hover:grid grid-flow-col gap-4 w-auto boder   justify-between absolute right-0 flex items-center p-4 m-2  "
+
+    ReactDOM.render(a, eleA_2)
+    ReactDOM.render(b, sub_div)
+
+    let chat_Div_U=document.createElement('div')
+    chat_Div_U.innerText=u
+    eleA_1.innerText=answerText
+    eleA.appendChild(eleA_1)
+    eleA.appendChild(eleA_2)
+    
+    eleA.appendChild(sub_div)
+//  CHATS_DivUser.appendChild(eleA)
+    CHATS_DivUser.insertBefore(eleA,CHATS_DivUser.lastChild)
+
+
+    
+    // let chat_Div_A=document.createElement('div')
+    chat_Div_U.innerText+=answerText
+
+  //  hgdgshjsddfshdshfgjhsdf/
 }
 
   return (
