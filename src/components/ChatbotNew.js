@@ -28,22 +28,45 @@ export default function Avaz(props) {
   const [recognition, setRecognition] = useState(null);
   let u
   const [micon, setMicon] = useState(false)
+  const [historyobj, setHistoryobj] = useState('')
+  const [his,setHis]=useState(false)
   //input button logic
   const inputQuery = (e) => {
     console.log(input)
     setInput(e.target.value)
 
   }
+  
   const micClose = () => {
     // SpeechRecognizer.continuous = false
     //   SpeechRecognizer.stop()
     setMicon(false)
 
   }
+// fetching history
+// useEffect(async() => {
+//   try {
+//   const res1 = await axios.post("http://localhost:3001/hi", { Email })
+  
+//   // const reshis =  await axios.post("http://localhost:3001/history", Email);
+// setHistoryobj(res1.data) ;
+// setHis(true)
+// console.log(historyobj)
+// // console.log(res1.data)
+// // console.log(historyobj[0].query)
+// // console.log(historyobj[1].query)
+//   } catch (error) {
+//     console.log(error)
+//   }
+// },[]) 
 
+
+
+// end
   //.................Speech--To--Text API's Codes SECTION Start.....................................
   var v
   useEffect(() => {
+    hisfetch();
     const initializeSpeechRecognition = () => {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       const recognitionInstance = new SpeechRecognition();
@@ -302,12 +325,27 @@ export default function Avaz(props) {
       console.log(error)
     }
   }
+  // history fetch 
+  const hisfetch= async()=>{
+    console.log(Email);
+    const res1 = await axios.post("http://localhost:3001/hi", { Email })
+  
+    // const reshis =  await axios.post("http://localhost:3001/history", Email);
+    if (res1.data!==null) {
+      
+      setHistoryobj(res1.data) ;
+      setHis(true)
+    }
+  console.log(historyobj)
+  }
 
   //post logic
   const fetchPost = async (query) => {
     try {
       setLoad(true)
       const res = await axios.post("http://localhost:3001/POST", { query,Email })
+    hisfetch();
+    
       setLoad(false)
       console.log(res)
       return res.data
@@ -590,18 +628,17 @@ let eleA = document.createElement("div")
           </div> */}
 
           </div>
-          <div  className={`HISTORY relative bg-[rgb(37,38,40)] z-50 bordr bordr-blue-500 w-[27%] h-full p-6 border-l border-neutral-700 transition-all delay-100 duration-100 max-[768px]:w-[90%]   max-[768px]:absolute right-0 max-[768px]:${openHist ? ' translate-x-0' : 'translate-x-full '}`}>
+          <div  className={`HISTORY  overflow-y-scroll overflow-x-hidden  relative bg-[rgb(37,38,40)] z-50 bordr bordr-blue-500 w-[27%] h-full p-6 border-l border-neutral-700 transition-all delay-100 duration-100 max-[768px]:w-[90%]   max-[768px]:absolute right-0 max-[768px]:${openHist ? ' translate-x-0' : 'translate-x-full '}`}>
            
            <div className=' top-0 w-full   p-2'><h1 className='text-3xl text-center justify-center text-white font-bold'>history</h1></div><hr className=' text-3xl bg-gray-400 text-gray-400  m-2 ml-0 w-full text-center '></hr>
-            <div onClick={Newchat} className=' text-lg px-4 py-2 overflow-hidden my-4 bg-[rgb(22,23,25)] text-neutral-400 CHAT_HISTORY w-full min-h-16 bordr flex items-center justify-between max-h-24 shadow-lg rounded-xl'>
-              <span className='overflow-hidden text-xl max-h-24  min-h-16 '>dhhhhhhhhhh</span>
-              <p hidden className='q'>lorem23
-   jdjksjdfj dfjdsjlfhgfs fsdlkjhfsd hfldaslhjdf sdfifdsjksf
+           {his && historyobj.map((chat, index) => (  <div onClick={Newchat} className=' text-lg px-4 py-2 overflow-hidden my-4 bg-[rgb(22,23,25)] text-neutral-400 CHAT_HISTORY w-full  bordr flex items-center justify-between max-h-24 shadow-lg rounded-xl'>
+              <span className='overflow-hidden text-xl max-h-24   '>{chat.query}</span>
+              <p hidden className='q'>{chat.query}
               </p>
-              <p hidden className='ans'> mgzkj;g sierpouks tevm niumax-h erpouks tevmniuma x-h-24max -h-24 erpouks tevmniumax-h-24max-h-24-24max-h-24 pwfkui f4npfukwi ifiuwkfr</p>
+              <p hidden className='ans'> {chat.answer}</p>
             
             </div>
-           
+           ))}
           </div>
 
 
