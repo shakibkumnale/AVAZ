@@ -343,7 +343,8 @@ const SignLog = () => {
                       value={user.Fname}
                       onChange={onChangeInput}
                       placeholder="shakib" //don't remove placeholder it's float then
-
+                      pattern="[A-Za-z]+"
+                      title="only latters "
                       className="   bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12 max-[768px]:w-11/12  border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
                     ></input>
                     <label
@@ -364,6 +365,8 @@ const SignLog = () => {
                       name="Lname"
                       type="text"
                       value={user.Lname}
+                      pattern="[A-Za-z]+"
+                      title="only aphabets allow"
                       onChange={onChangeInput}
                       required
                       placeholder="shakib"
@@ -410,14 +413,16 @@ const SignLog = () => {
                     <input
                       id="number"
                       type="text"
-                      title="'invailid number"
-                      pattern="[6789][0-9]{9}"
+                      title="minmum 10 digit & must start with 6,7,8,9"
+                      pattern="([6789][0-9]{9})"
+                      maxLength='10'
+
                       name="Phone"
                       value={user.Phone}
                       onChange={onChangeInput}
                       required
                       placeholder="shakib"
-                      className="bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 invalid:border-red-600 focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
+                      className="bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4  focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
                     ></input>
                     <label
                       htmlFor="number"
@@ -439,7 +444,8 @@ const SignLog = () => {
                       onChange={matchpass}
                       name="Password"
                       value={user.Password}
-
+                      title="minimum 8 latters includes one symbol, digit, capital latter"
+                      pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$"
                       type="Password"
                       required
                       placeholder="shakib"
@@ -487,6 +493,8 @@ const SignLog = () => {
                     <input name="City" list="city-list"
                       placeholder="shakib"
                       value={user.City}
+                      pattern="[A-Za-z]+"
+                      title="only aphabets allow"
                       onChange={onChangeInput}
                       className="bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4 focus:border-[#2cffe6] border-gray-300 placeholder-transparent " id="City">
                     </input>
@@ -517,9 +525,10 @@ const SignLog = () => {
                       required
                       value={user.Otp}
                       onChange={onChangeInput}
-
+                      pattern="[0-9]{1,6}"
+                      title="required 6 digit number "
                       placeholder="shakib"
-
+                      maxLength='6'
                       className="bg-transparent shadow-lg peer focus:outline-none text-base   px-3 pt-2 pb-2  rounded-lg w-10/12  max-[768px]:11/12 border border-b-4  focus:border-[#2cffe6] border-gray-300 placeholder-transparent "
                     ></input>
                     <label

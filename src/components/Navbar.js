@@ -72,7 +72,7 @@ export default function() {
             }
     }
     return (
-        <>
+        <div className='w-full h-16'>
             <Pop1l poplog={pop} onChange={(value)=>setPop(value)}/>
         {
             (location!="/ai" && location!="/new" && location!="/new1" && location!="/AVAZ")  &&
@@ -154,6 +154,6 @@ export default function() {
             </div>
         }
 
-        </>
+        </div>
     )
 }

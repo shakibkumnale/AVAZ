@@ -24,7 +24,7 @@ import Forget from './components/Forget';
 function App() {
   
   return (
-    <div >
+    <div classname="overflow-x-hidden w-full h-screen">
       <NoteState>
       <Router>
         

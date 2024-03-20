@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import YouTube from 'react-youtube';
 const ObjectDetectionComponent = () => {
   const [imageSrc, setImageSrc] = useState('');
   const [objects, setObjects] = useState([]);
@@ -40,30 +40,34 @@ const ObjectDetectionComponent = () => {
   };
 
   return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
+<div className='w-full h-full bg-gray-500  rounded-2xl p-4 flex justify-center' >
+<YouTube videoId="N6gOxEFr2ZE" />
+</div>
+
+    // <div style={{ position: 'relative', display: 'inline-block' }}>
       
-      {imageSrc && <img src={imageSrc} alt="Uploaded" style={{ maxWidth: '100%', maxHeight: '100%' }} />}
-      {objects.map((object, index) => (
-        <div
-          key={index}
-          className="absolute border-2 border-transparent transition-colors duration-300 hover:border-red-500"
-          style={{
-            left: object.box.xmin,
-            top: object.box.ymin,
-            width: object.box.xmax - object.box.xmin,
-            height: object.box.ymax - object.box.ymin,
-            // pointerEvents: 'none', // Prevent the box from blocking mouse events on the image
-          }}
-          onMouseEnter={() => handleMouseOver(object)}
-          onMouseLeave={handleMouseOut}
-        >
-          {hoveredObject === object && (
-            <div className="absolute top-0 left-0 bg-white text-black p-1">{object.label}</div>
-          )}
-        </div>
-      ))}
-      <input type="file" accept="image/*" onChange={handleFileChange} />
-    </div>
+    //   {imageSrc && <img src={imageSrc} alt="Uploaded" style={{ maxWidth: '100%', maxHeight: '100%' }} />}
+    //   {objects.map((object, index) => (
+    //     <div
+    //       key={index}
+    //       className="absolute border-2 border-transparent transition-colors duration-300 hover:border-red-500"
+    //       style={{
+    //         left: object.box.xmin,
+    //         top: object.box.ymin,
+    //         width: object.box.xmax - object.box.xmin,
+    //         height: object.box.ymax - object.box.ymin,
+    //         // pointerEvents: 'none', // Prevent the box from blocking mouse events on the image
+    //       }}
+    //       onMouseEnter={() => handleMouseOver(object)}
+    //       onMouseLeave={handleMouseOut}
+    //     >
+    //       {hoveredObject === object && (
+    //         <div className="absolute top-0 left-0 bg-white text-black p-1">{object.label}</div>
+    //       )}
+    //     </div>
+    //   ))}
+    //   <input type="file" accept="image/*" onChange={handleFileChange} />
+    // </div>
   );
 };
 
