@@ -21,7 +21,7 @@ export default function ErrorPage() {
                 </div>
             </div>
             <div>
-                <img src="http://localhost:3000/404.png" />
+                <img src="/404.png" />
             </div>
         </div>
   )

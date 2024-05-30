@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { FiMenu } from "react-icons/fi";
 import { LuUserCircle2 } from "react-icons/lu";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, N, useLocation, useNavigate } from 'react-router-dom';
 import { BsRobot } from "react-icons/bs";
 import { FaHome,FaMicrophoneAlt } from "react-icons/fa";
 import { TiContacts,TiDocumentText } from "react-icons/ti";
@@ -11,13 +11,16 @@ import { IoSend,IoSearch,IoClose } from "react-icons/io5";
 import axios from "axios"
 import { IoMdArrowDropleft,IoIosArrowBack,IoIosArrowForward } from "react-icons/io";
 import Loader from './Loader';
-import micGif from './googleVoice.gif'
+// import micGif from './googleVoice.gif'
 import { MdContentCopy,MdOutlineEdit } from "react-icons/md";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { TbReload } from "react-icons/tb";
 import { RiImageEditLine } from "react-icons/ri";
 import { IoImageOutline } from "react-icons/io5";
+import { FaArrowAltCircleDown } from "react-icons/fa";
+import { Navigate } from "react-router-dom"; 
 export default function Avaz() {
+  const navigate=useNavigate()
   const loc = useLocation().pathname
   const [load, setLoad] = useState(false)
   const [input, setInput] = useState("")
@@ -83,6 +86,7 @@ export default function Avaz() {
     if (recognition) {
       recognition.start();
     }
+    
   };
 
 
@@ -125,7 +129,7 @@ export default function Avaz() {
     eleA.firstElementChild.innerText=""
     let ans = await fetchPost(eleU.innerText)
 
-    for (let i = 0; i < ans.length; i++) {
+    for (let i = 0; i < ans; i++) {
       const element = ans[i];
       // window.scrollTo(0, CHATS_DivUser.scrollHeight)
       setTimeout(() => {
@@ -146,7 +150,7 @@ export default function Avaz() {
     let eleU_A = document.createElement('button')
     let edit = <MdOutlineEdit title='edit' className=' ' />
     ReactDOM.render(edit, eleU_A)
-    eleU.className += "USER outline-none float-right relative group text-xl  self-end m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words font-semibold bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
+    eleU.className += "USER outline-none max-sm:max-w-[80%] max-sm:text-sm max-sm:px-2 float-right relative group text-base  self-end m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words font-semibold bg[#3FDD79] bg-black text-white bordr-1 p-2 shadow-xl rounded-s-2xl rounded-se-2xl  "
     eleU_A.className += " text-white absolute top-[100%] right-0 p-4 group-hover:block hidden opacity-50 hover:opacity-100 text-lg"
     eleU.innerText = input
 
@@ -155,7 +159,7 @@ export default function Avaz() {
     CHATS_DivUser.insertBefore(eleU,CHATS_DivUser.lastChild)
 
 
-    u = input
+    u = input.toLowerCase();
 
 
     let u1 = `There are several different types of PCs, each with their own specific purpose and configuration:
@@ -170,22 +174,8 @@ export default function Avaz() {
     let eleA_1 = document.createElement('span')
     let eleA_2 = document.createElement('div')
     let sub_div = document.createElement('div')
-    let a = <HiOutlineSpeakerWave className="opacity-50 hover:opacity-100 cursor-pointer   " onClick={() => { textTospeexh(eleA) }} />
-    let b = < >
-      <div className=' text-white flex items-cente justify-center h-auto text-center my-2   ' title=''>
-        <span className='opacity-50 hover:opacity-100 cursor-pointer'>
-          <IoIosArrowBack disabled />
-        </span>
-        <h1 className='opacity-50'>0</h1>
-        <span className='opacity-50 hover:opacity-100 cursor-pointer '>
-          <IoIosArrowForward />
-        </span>
-
-      </div>
-      <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='copy' onClick={() => { copy(eleA) }}><MdContentCopy /></div>
-      <div className=' text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='reload' onClick={() => { regenrate(eleU, eleA) }}><TbReload /></div>
-    </>
-    eleA.className += "AVAZ relative leading-5 z-0 text-xl group float-left bg-white self-start m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
+    
+    eleA.className += "AVAZ relative leading-relaxed max-sm:max-w-[80%] max-sm:text-sm max-sm:px-2 z-0 text-base group float-left items-center gap-2 h-auto bg-white self-start m-4 min-w-[20%] px-4 w-auto max-w-[50%] whitespace-break-spaces break-words shadow-xl border p-2 rounded-e-2xl rounded-ss-2xl  "
     // eleA_2.classList.add("absolute","right-2","bottom-2")
     // eleA.setAttribute='ref'
   
@@ -193,10 +183,129 @@ export default function Avaz() {
     // sub_div.classList.add("hidden","group-hover:block","absolute","top-[100%]","rounded-sm","bg-white","flex")
     sub_div.className += "hidden  group-hover:grid grid-flow-col gap-4 w-auto boder   justify-between absolute right-0 flex items-center p-4 m-2  "
 
-    ReactDOM.render(a, eleA_2)
-    ReactDOM.render(b, sub_div)
+  
   // xx------------------------**jarvis start**------------------------------------------xx
     let ans ;
+  console.log("s"+u)
+
+  if (u.includes("play")) {
+    let playStr = u.split("");
+    playStr.splice(0, 5);
+    let videoName = playStr.join("");
+    playStr = playStr.join("").split(" ").join("+");
+    readOut(`searching youtube for ${videoName}`);
+    ans=`searching youtube for ${videoName}`;
+    let a = window.open(`https://www.youtube.com/search?q=${playStr}`);
+    // windowsB.push(a)
+  }
+  // if (u.includes("open instagram")) {
+  //   readOut("opening instagram sir");
+  //   let a =window.open("https://www.instagram.com");
+  //   // windowsB.push(a)
+  // }
+
+if (u.includes("open calendar")) {
+  console.log(u)
+      readOut("opening calendar");
+      ans="opening calendar"
+      let a = window.open("https://calendar.google.com/");
+      // windowsB.push(a)
+    }
+    // if (u.includes("open instagram")) {
+    //   readOut("opening instagram sir");
+    //   ans="opening instagram sir"
+    //         let a =window.open("https://www.instagram.com");
+    //   // windowsB.push(a)
+    // }
+    if (u.includes("write tweet on ")) {
+      // readOut("opening twitter sir");
+       ans = await fetchPost(u)
+      const urlEnStr = await encodeURIComponent(ans);
+      let a = window.open(`https://twitter.com/intent/post?text=${urlEnStr}`);
+      // let a = window.open(`https://twitter.com/`);
+      // windowsB.push(a)
+    }
+    if (u.includes("open youtube")) {
+      readOut("opening youtube sir");
+      ans="opening youtube sir"
+      let a = window.open("https://www.youtube.com/");
+      // windowsB.push(a)
+    }
+    if (u.includes("open github")) {
+      readOut("opening github");
+      ans="opening github"
+
+      let a = window.open("https://github.com/");
+      // windowsB.push(a)
+    }
+    
+    if (u.includes("open google")) {
+      readOut("opening google");
+      ans = "opening google";
+
+      let a = window.open("https://www.google.com/");
+    } else if (u.includes("open youtube")) {
+      readOut("opening youtube");
+      ans = "opening youtube";
+
+      let a = window.open("https://www.youtube.com/");
+    } else if (u.includes("open facebook")) {
+      readOut("opening facebook");
+      ans = "opening facebook";
+
+      let a = window.open("https://www.facebook.com/");
+    } else if (u.includes("open twitter")) {
+      readOut("opening twitter");
+      ans = "opening twitter";
+      
+      let a = window.open("https://twitter.com/");
+    }
+    if (u.includes("what time is it")) {
+      let now = new Date();
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      let time = hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+    
+      readOut("The current time is " + time);
+      ans = "The current time is " + time;
+    }
+    
+    if (u.includes("open amazon")) {
+      readOut("opening amazon");
+      ans = "opening amazon";
+    
+      let a = window.open("https://www.amazon.com/");
+    }
+    
+    if (u.includes("open reddit")) {
+      readOut("opening reddit");
+      ans = "opening reddit";
+    
+      let a = window.open("https://www.reddit.com/");
+    }
+    
+    if (u.includes("show me the news")) {
+      readOut("opening news website");
+      ans = "opening news website";
+    
+      let a = window.open("https://www.bbc.com/news");
+    }
+    
+    
+    if (u.includes("search for")) {
+      let inputg = u.split("");
+      
+      inputg.splice(0, 11);
+      inputg.pop();
+      ans=`searching for ${inputg.join("").split(" ").join(" ")}`
+      readOut(ans);
+      inputg = inputg.join("").split(" ").join("+");
+      let a = window.open(`https://www.google.com/search?q=${inputg}`);
+      readOut("here's your result");
+      
+      // windowsB.push(a)
+    }
+
   console.log("s"+u)
 
   if (u.includes("play")) {
@@ -222,20 +331,71 @@ if (u.includes("open calendar")) {
       let a = window.open("https://calendar.google.com/");
       // windowsB.push(a)
     }
-    if (u.includes("open instagram")) {
-      readOut("opening instagram sir");
-      ans="opening instagram sir"
-            let a =window.open("https://www.instagram.com");
-      // windowsB.push(a)
-    }
+    // if (u.includes("open instagram")) {
+    //   readOut("opening instagram sir");
+    //   ans="opening instagram sir"
+    //         let a =window.open("https://www.instagram.com");
+    //   // windowsB.push(a)
+    // }
+
+// Basic Commands of Jarvis related to AVAZ
+if (u.includes("who are you")) {
+  readOut("Hello! I am Avaz, an AI voice assistant developed by Shakib and Kamruddin for our BSC IT final year project. I am here to assist you with any queries or tasks you may have. How can I help you today?");
+  ans="Hello! I am Avaz, an AI voice assistant developed by Shakib and Kamruddin for our BSC IT final year project. I am here to assist you with any queries or tasks you may have. How can I help you today?"
+  // windowsB.push(a)
+}
+
+if (u.includes("tell me about kamruddin")) {
+  readOut("Kamruddin is one of the creators of Avaz AI voice assistant, developed as a BSC IT final year project by him and Shakib.");
+  ans="Kamruddin is one of the creators of Avaz AI voice assistant, developed as a BSC IT final year project by him and Shakib."
+  let a =window.open("https://github.com/sayyedkamruddin/");
+  // windowsB.push(a)
+}
+
+
+if (u.includes("tell me about shakib")) {
+  readOut("Shaakib is one of the developers who worked on creating me, Avaz AI voice assistant, for the BSC IT final year project along with Kamruddin.");
+  ans="Shakib is one of the developers who worked on creating me, Avaz AI voice assistant, for the BSC IT final year project along with Kamruddin."
+  
+  let a =window.open("https://github.com/shakibkumnale");
+ 
+}
+
+if (u.includes("open profile")) {
+  readOut("opening you profile ");
+  ans="opening..."
+  // let a =window.open("http://localhost:3000/profile");
+  navigate("/profile")
+  
+  // windowsB.push(a)
+}
+// basic Command End
+
     if (u.includes("write tweet on ")) {
       // readOut("opening twitter sir");
        ans = await fetchPost(u)
       const urlEnStr = await encodeURIComponent(ans);
       let a = window.open(`https://twitter.com/intent/post?text=${urlEnStr}`);
-      // let a = window.open(`https://twitter.com/`);
+      // let a = window.open(https://twitter.com/);
       // windowsB.push(a)
     }
+    if (u.includes("write email")) {
+      // readOut("opening twitter sir");
+      let con=prompt("enter your email")
+
+      if (con!=null || con!="" ) {
+        let playStr = u.split("");
+        playStr.splice(0, 12);
+        let videoName = playStr.join("");
+        playStr = playStr.join("").split(" ").join("+");
+        
+       ans = await fetchPost(u)
+      const urlEnStr = await encodeURIComponent(ans);
+      
+      let a = window.open(`https://mail.google.com/mail/u/0/?to=${con}&su=${playStr}&body=${urlEnStr}&tf=cm`);
+     
+    }
+  }
     if (u.includes("open youtube")) {
       readOut("opening youtube sir");
       ans="opening youtube sir"
@@ -263,7 +423,12 @@ if (u.includes("open calendar")) {
       readOut("here's your result");
 
       // windowsB.push(a)
-    }
+    }
+    
+    if (!ans) {
+      ans='Sorry for the inconvenience, could you please try saying that again?'
+      readOut("Sorry for the inconvenience, could you please try saying that again?");
+       }
 
 
 
@@ -311,14 +476,14 @@ if (u.includes("open calendar")) {
     let CHATS_DivUser = document.getElementById("chats");
     // window.scrollTo(0, CHATS_DivUser.scrollHeight)
     let eleU = document.createElement("div")
-    eleU.className += "USER float-right self-end m-4 w-[40%] whitespace-break-spaces break-words bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
+    eleU.className += "USER outline-none max-sm:max-w-[80%] max-sm:text-sm max-sm:px-2 float-right relative group text-base  self-end m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words font-semibold bg[#3FDD79] bg-black text-white bordr-1 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
     eleU.innerHTML = e
     CHATS_DivUser.appendChild(eleU)
-    u = e
+    u = e.toLowerCase();
 
     setInput("")
     let eleA = document.createElement("div")
-    eleA.className += "AVAZ float-left self-start m-4 w-[40%] whitespace-break-spaces break-words shadow-xl border-2 p-2 rounded-e-2xl rounded-ss-2xl "
+    eleA.className += "AVAZ relative leading-relaxed max-sm:max-w-[80%] max-sm:text-sm max-sm:px-2 z-0 text-base group float-left items-center gap-2 h-auto bg-white self-start m-4 min-w-[20%] px-4 w-auto max-w-[50%] whitespace-break-spaces break-words shadow-xl border p-2 rounded-e-2xl rounded-ss-2xl "
     // let a = AVAZ AI.......${input}
     eleA.innerText += await fetchPost(u)
     // eleA.innerHTML += u
@@ -421,16 +586,19 @@ useEffect(()=>{
 
 
 
+
+  
+
   return (
     <>
-      {<div className=' bordr-4  border-red-800 flex w-full h-dvh overflow-hidden  bg-[rgb(22,23,25)]  '>
+      {<div className=' bordr-4  border-red-800 flex w-full h-dvh overflow-hidden  bg-[rgb(249,249,249)]  '>
         {micon &&
           <div className='    absolute w-full h-full bg-black bg-opacity-40 justify-center items-center flex ' style={{ zIndex: "99" }}>
             <div className=' p-4 rounded-lg w-96 h-96 border-2 bg-white flex flex-col '>
               <button className='w-full flex justify-end' onClick={micClose}><IoClose /></button>
               <div className=' flex flex-col items-center'>
                 <p>Listening.... </p>
-                <img src={micGif} className=' w-20' />
+                <img src="/googleVoice.gif" className=' w-20' />
               </div>
               <div className='bordr w-full p-2 flex justify-center'>
                 <p className='bordr w-[70%] '>{speehc}</p>
@@ -438,116 +606,81 @@ useEffect(()=>{
             </div>
           </div>}
 
+          {load && <div className=' absolute flex top[50%] z-50 w-[100%] h-full justify-center cursor-wait  '>
+              <Loader />
+            </div>}
 
-        <div className={`SIDE-NAV bordr relative z-50 bg-[rgb(22,23,25)]   transition-all delay-100 duration-100   bordr-black w-[18%] h-full flex flex-col items-center p-4 space-y-8 bg-opacity-80 max-[768px]:bg-opacity-100 bg-emerald00 shadw-2xl  max-[768px]:absolute
-             max-[768px]:${open ? 'translate-x-[0px]' : '-translate-x-[200px]'}`}>
-          <button className=' absolute right-0 p-2 text-white md:hidden ' onClick={menu}><IoClose /></button>
 
-          <div className=' w-5/6 grid grid-flow-col items-center font-bold text-[#3FDD79]'>
-            <Link to='/'>
+        <div className={`SIDE-NAV bordr relative z-49 bg-[rgb(249,249,249)]   transition-all delay-100 duration-100   bordr-black w-[18%] h-full flex flex-col items-center p-4 space-y-8 bg-opacity-80 max-[768px]:bg-opacity-100 bg-emerald00 shadw-2xl  max-[768px]:absolute
+             max-[768px]:${open ? 'translate-x-[0px]' : '-translate-x-[800px]'} max-[768px]:w-full max-[768px]:z-50 max-[768px]:p-0`}>
+          <button className=' absolute right-0 p-2  bordr md:hidden ' onClick={menu}><IoClose /></button>
+          <div className=' w-5/6 grid grid-flow-col items-center font-bold justify-center'>
+            {/* <Link to='/'>
               <LuUserCircle2 className='w-full h-full ' />
-            </Link>
-            <p className=' text-2xl'>AvAz</p>
-
+            </Link> */}
+            <p className=' text-4xl'>AvAz</p>
           </div>
-          <div className='SIDE_MENU w-6/6 m-auto text-neutral-500 '>
-            <ul className=' w-full p-2 text-2xl font-semibld space-y-4 text-whit   max-lg:text-sm '>
-              <li><Link to='/' className={` hover:text-white flex text-center items-center gap-2 `}><FaHome /> Home</Link></li>
-              <li><Link to='/ai' className={`  text-${loc === "/AVAZ" ? "white" : "black"} hover:text-${loc === "/AVAZ" ? "white" : ""} flex text-center items-center gap-2 `}><BsRobot /> Ai</Link></li>
-              <li><Link to='/about' className={` hover:text-white flex text-center items-center gap-2 `}><FcAbout /> About</Link></li>
-              <li><Link to='/document' className={` hover:text-white flex text-center items-center gap-2 `}><TiDocumentText /> Document </Link></li>
-              <li><Link to='/contact' className={` hover:text-white  flex text-center items-center gap-2 `}> <TiContacts /> Contact</Link></li>
-            </ul>
-          </div>
+          <div className='SIDE_MENU w-6/6 m-auto  '>
+            <ul className=' w-full p-2 text-lg font-medium font-semibld space-y-4 text-whit   max-lg:text-sm max-[768px]:text-md '>
+              <li><Link to='/' className={` text-[rgb(114,116,118)] hover:text-black flex text-center items-center gap-2 `}><FaHome /> Home</Link></li>
+              <li className=' relative overflow-hidden gap-2  flex flex-col '>
 
-          <div className='PROFILE absolute bottom-4  bordr p-2 w-5/6 rounded-xl bg-[rgb(37,38,40)]'>
-            <Link to='/'>
-              <div className=' flex items-center gap-2  '>
-                <LuUserCircle2 className=' w-5/6 h-full bg-white rounded-full' />
-                <div className=' text-base  text-white'>
-                  <p>NAME-XYZ</p>
-                  <p className=' text-neutral-500 text-xs'>XYZ@gmail.com</p>
+                <div className=' flex items-center justify-between hover:text-[rgb(26,27,28)] cursor-pointer'>
+                  <Link to='/chatbot' className={`  text-${loc === "/chatbot" ? "black" : ""} hover:text-${loc === "/chatbot" ? "hover:text-red-500" : "hover:text-[rgb(114,116,118)]"} flex text-center items-center gap-2 `}>
+                    <BsRobot />
+                    <p>AI</p>
+                  </Link>
                 </div>
-              </div>
-            </Link>
+               
+              </li>
+              {/* <li><Link to='/about' className={` text-[rgb(114,116,118)] hover:text-black flex text-center items-center gap-2 `}><FcAbout /> About</Link></li> */}
+              <li><Link to='/document' className={` text-[rgb(114,116,118)] hover:text-black flex text-center items-center gap-2 `}><TiDocumentText /> Document </Link></li>
+              <li><Link to='/contact' className={` text-[rgb(114,116,118)] hover:text-black flex text-center items-center gap-2 `}> <TiContacts /> Contact</Link></li>
+            </ul>
           </div>
         </div>
 
 
-        <div className=' w-full relative  flex flex-row m-4 rounded-xl borer overflow-hidden'>
-          <div className='AI-CHAT bordr bg-[rgb(37,38,40)]  border-green-500 w-[80%] flex flex-col items-center h-full relative  m-auto overflow-auto max-[768px]:w-full  '>
-            {load && <div className=' absolute flex top-[50%] '>
+        <div className=' w-full relative  flex flex-row m-4 max-sm:m-0 max-sm:rounded-none rounded-xl shadow-lg borer overflow-hidden'>
+          <div className='AI-CHAT bordr bg-white  border-green-500 w-[100%] flex flex-col items-center h-full relative  m-auto overflow-auto max-[768px]:w-full  '>
+            {/* {load && <div className=' absolute flex top-[50%] '>
               <Loader />
-            </div>}
+            </div>} */}
             <div className=' text-center font-bold shadow-sm p-2 w-full  grid-cols-4 max-[768px]:grid grid-flow-row-dense   '>
-              <button className=' md:hidden text-white text-xl ' onClick={menu}><FiMenu /></button>
+              <button className=' md:hidden text-xl ' onClick={menu}><FiMenu /></button>
               <p className='col-span-2 text-neutral-400'>
-              <div className='SWITCH_BTN   '>
-                <div className=' flex justify-center gap-2 text-lg items-center  '>
-                  <div className='border border-white flex rounded-md overflow-hidden  '>
-                  <Link to={'/ai'}><p className=' p-1 px-4 cursor-pointer '    >CHAT </p></Link>
-                        <p className=' border h-auto border-white'></p>
-                        <Link to={'/AVAZ'}>   <p className='p-1 px-4 cursor-pointer bg-white text-black' >AVAZ</p></Link>
+                <div className='SWITCH_BTN   '>
+                  <div className=' flex justify-center gap-2 text-lg items-center   '>
+                    <div className='border  flex rounded-md overflow-hidden max-sm:text-sm  '>
+                      <p className=' p-1 px-4 cursor-pointer    max-sm:px-1'   ><Link to={'/chatbot'}>CHAT</Link> </p>
+                      <p className=' border h-auto '></p>
+                      <p className='p-1 px-4 cursor-pointer max-sm:px-1' ><Link to={'/avaz'}>AVAZ</Link></p>
+                      <p className=' border h-auto '></p>
+                      <p className='p-1 px-4 cursor-pointer bg-black text-white max-sm:px-1' ><Link to={'/jarvis'}>Jarvis</Link></p>
+                    </div>
                   </div>
-                   </div>
                 </div>
               </p>
             </div>
-            <div className='CHATS relative scroll-auto   w-full h-full bordr-8 flex flex-col px-[10%] pb-[4%]    overflow-auto space-y-8 p-4 ' id='chats'>
-              {/* <button onClick={()=>{end.current.scrollIntoView()}}>okkk</button> */}
-              {/* <div className="USER relative flex float-right self-end m-4 w-[40%] whitespace-break-spaces break-words bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl ">
-            <button className=' float-end absolute end-0 bottom-0'>
-              okk
-            </button>
-            </div> */}
-           
 
-            <div ref={end}></div>
+            <div  className='CHATS scrollsmooth relative scroll-auto justify-centr items-centr  w-full h-full bordr-8 flex flex-col px-[10%] max-sm:px-[2%] pb-[4%]    overflow-auto space-y-8 p-4 ' id='chats'>
+              
+
+              <div ref={end}></div>
 
 
             </div>
-            <div className='INPUT w-full h-36 p-4 border-t border-neutral-700 max-md:h-20 items-center flex  '>
-              <div className='INPUT-BAR max-h-24 bordr-2 bg-[rgb(22,23,25)] w-[80%] flex flex-row justify-between  items-end   px-2 space-x-1 rounded-xl  m-auto p-2 shadow-lg   '>
-                <button className=' text-xl  text-white p-2 rounded-2xl hover:bg-neutral-800 ' onClick={VoiceInputQuery}><FaMicrophoneAlt /></button>
-                {/* <input type='text' className=' w-[85%] h-60 text-xl text-neutral-400 outline-none bg-[rgb(22,23,25)]  ' onChange={inputQuery} value={input} placeholder='Ask Query' /> */}
-                <textarea className='w-[85%]    max-h-20  text-lg text-neutral-400 outline-none bg-[rgb(22,23,25)] resize-none ' rows={1} onChange={inputQuery} value={input} placeholder='Ask Query' onKeyUp={increaseHieght}>
+            <div className='INPUT relative w-full h-36 p-4 border-t border-neutral-300 max-md:h-20 items-center flex   '>
+
+              <div className='INPUT-BAR max-h-24 bordr-2  bg-white w-[80%] flex flex-row justify-between  items-center    px-2 space-x-1 rounded-xl  m-auto p-2 shadow-lg border shadow-slate-200 max-sm:w-full  '>
+                <button className=' text-xl  max-sm:text-base  p-2 rounded-2xl hover:bg-gray-200 ' onClick={VoiceInputQuery}><FaMicrophoneAlt /></button>
+                <textarea className='w-[85%] max-h-20  text-lg max-sm:text-base outline-none bg-white resize-none  ' rows={1} onChange={inputQuery} value={input} placeholder='Ask Query' onKeyUp={increaseHieght}>
                 </textarea>
-                <button className=' text-xl text-white p-2 rounded-2xl hover:bg-neutral-800 cursor-pointer ' disabled={input.length == 0} onClick={send}><IoSend /></button>
+                <button className='text-xl max-sm:text-base p-2 rounded-2xl hover:bg-gray-200 cursor-pointer  ' disabled={input.length == 0} onClick={send}><IoSend /></button>
+
               </div>
             </div>
-
-
-
-            {/* extra design below
-            <div className='INPUT-BAR border-2 absolute bottom-[5%]   w-[80%] flex flex-row justify-between   px-2 space-x-1 rounded-xl  m-auto p-2 shadow-lg bg-white    '>
-            <button className=' text-xl  bg-emerald-400 p-2 rounded-2xl hover:bg-emerald-200 ' onClick={VoiceInputQuery}><FaMicrophoneAlt /></button>
-            <input type='text' className=' w-[85%] text-xl outline-none ' onChange={inputQuery} value={input} placeholder='Ask Query' />
-            <button className=' text-xl bg-emerald-400 p-2 rounded-2xl hover:bg-emerald-200 ' disabled={input.length == 0} onClick={send} ><IoSend /></button>
-          </div> */}
-
           </div>
-          <div className={`HISTORY relative bg-[rgb(37,38,40)] z-50 bordr bordr-blue-500 w-[20%] h-full p-6 border-l border-neutral-700 transition-all delay-100 duration-100 max-[768px]:w-[90%]   max-[768px]:absolute right-0 max-[768px]:${openHist ? ' translate-x-0' : 'translate-x-full '}`}>
-            <button className=' md:hidden absolute top-[50%] -left-4 text-white ' onClick={history}><IoMdArrowDropleft /></button>
-            <div className='DIFFERENT-AI-MODELS-BTNS flex flex-col gap-5 p-4  '>
-                <h1 className=' text-white text-xl'>ALL MODELS</h1>
-            <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-start gap-2 p-2'> <RiImageEditLine/>Text to Image</button>
-            <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-start gap-2 p-2 '><IoImageOutline/>Image to Image</button>
-            <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-center gap-2'>Image to text</button>
-            <button className=' bg-white rounded-xl text-xl text-center opacity-40  h-12 hover:opacity-100 flex items-center justify-center gap-2'>Image to text</button>
-            
-            {/* img btn remainig */}
-            
-            {/* <div className=' '>
-                <form >
-                    <label for='img' ><div className='w-28 h-28 border'> <img src='/imgbtn.jpg' /></div></label>
-                    <input type='file' id='img' className=' hidden'/>
-                </form>
-            </div> */}
-            </div>
-            <br />
-          </div>
-
-
 
         </div>
       </div>}

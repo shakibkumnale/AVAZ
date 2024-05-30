@@ -9,23 +9,25 @@ import { TiContacts, TiDocumentText } from "react-icons/ti";
 import { FcAbout } from "react-icons/fc";
 import { IoSend, IoSearch, IoClose } from "react-icons/io5";
 import axios from "axios";
-import ReactPlayer from "react-player";
+// import ReactPlayer from "react-player";
 import {
   IoMdArrowDropleft,
   IoIosArrowBack,
   IoIosArrowForward,
 } from "react-icons/io";
 import Loader from "./Loader";
-import micGif from "./googleVoice.gif";
+// import micGif from "./googleVoice.gif";
 import { MdAudiotrack, MdContentCopy, MdDownload, MdOutlineEdit } from "react-icons/md";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { TbReload } from "react-icons/tb";
 import { RiImageEditLine } from "react-icons/ri";
 import { IoImageOutline } from "react-icons/io5";
+import { IoMdArrowDropdown } from "react-icons/io";
+
 export default function Avaz() {
   const loc = useLocation().pathname;
-  const slct = "text-white border-[3px] opacity-100 border-[#00ff00] ";
-  const other = "text-gray-500 border-2 border-gray-300 ";
+  const slct = "text-white  opacity-100  bg-black ";
+  const other = "text-gray-500 border border-gray-300 ";
   const [timg, setTimg] = useState(slct);
   const [taudio, setTaudio] = useState(other);
   const [obdetec, setObdetec] = useState(other);
@@ -126,16 +128,16 @@ export default function Avaz() {
     setTaudio(other);
   };
   const texttoaudio = () => {
-    
+
     setDis(true);
     setMode("text2audio");
     setTimg(other);
     setObdetec(other);
     setTaudio(slct);
   };
-  const objdetect=()=>{
+  const objdetect = () => {
     let CHATS_DivUser = document.getElementById("chats");
-   
+
 
     setDis(false);
     setTimg(other);
@@ -151,22 +153,29 @@ export default function Avaz() {
     const reader = new FileReader();
 
     reader.onload = async (event) => {
-      console.log(event.target.result);
       setImageSrc(event.target.result);
-      try {if(event.target.result){
+      try {
         const data = event.target.result.split(",")[1]; // Get base64 image data
+        setLoad(true);
+        
         const response = await fetch(
-          "https://api-inference.huggingface.co/models/facebook/detr-resnet-101",
-		{
-			headers: { Authorization: "Bearer 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" },
+          "https://api-inference.huggingface.co/models/facebook/detr-resnet-50",
+          {
+            headers: {
+              Authorization: "Bearer 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",
+              "Content-Type": "application/json",
+            },
             method: "POST",
             body: JSON.stringify({ inputs: data }),
           }
         );
+        setLoad(false);
+
         const result = await response.json();
-        setObjects(result);}
+        setObjects(result);
       } catch (error) {
         console.error("Error detecting objects:", error);
+        alert("Something went Wrong Please Try After Later")
       }
     };
 
@@ -228,9 +237,9 @@ export default function Avaz() {
     let eleU = document.createElement("div");
     eleU.setAttribute("disabled", "true");
     let eleU_A = document.createElement("button");
-   
+
     eleU.className +=
-      "USER rmc outline-none float-right relative group text-xl max-[768px]:text-md  self-end m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words font-semibold bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl ";
+      "USER rmc outline-none max-sm:max-w-[80%] max-sm:text-sm max-sm:px-2 float-right relative group text-xl max-[768px]:text-md  self-end m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words font-semibold bg[#3FDD79] bg-black text-white bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl ";
     eleU_A.className +=
       " rm text-white absolute top-[100%] right-0 p-4 group-hover:block hidden opacity-50 hover:opacity-100 text-lg";
     eleU.innerText = input;
@@ -260,7 +269,7 @@ export default function Avaz() {
     // let a = <HiOutlineSpeakerWave className="opacity-50 hover:opacity-100 cursor-disable   " onClick={() => { textTospeexh(eleA) }} />
     let b = (
       <>
-        <div
+        {/* <div
           className=" text-white flex items-cente justify-center h-auto text-center my-2   "
           title=""
         >
@@ -271,15 +280,15 @@ export default function Avaz() {
           <span className="opacity-50 hover:opacity-100 cursor-pointer ">
             <IoIosArrowForward />
           </span>
-        </div>
-        <div
-          className=" text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 "
-          title="copy"
+        </div> */}
+        {/* <div
+          className=" absolute top-0 text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 "
+          title="Download"
           onClick={handleDownload}
         >
           <MdDownload />
-        </div>
-        <div
+        </div> */}
+        {/* <div
           className=" text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 "
           title="reload"
           onClick={() => {
@@ -287,7 +296,7 @@ export default function Avaz() {
           }}
         >
           <TbReload />
-        </div>
+        </div> */}
       </>
     );
     eleA.className +=
@@ -301,9 +310,11 @@ export default function Avaz() {
       "hidden  group-hover:grid grid-flow-col gap-4 w-auto boder   justify-between absolute right-0 flex items-center p-4 m-2  ";
 
     ReactDOM.render(a, eleA_2);
-    ReactDOM.render(b, sub_div);
+    // ReactDOM.render(b, sub_div);
     if (mode === "text2img") {
       let imgs = document.createElement("img");
+    ReactDOM.render(b, sub_div);
+
       imgs.className += " w-full h-full rounded-[15px]";
 
       imgs.alt += "my image";
@@ -325,6 +336,8 @@ export default function Avaz() {
         setImageUrl(url);
       } catch (error) {
         console.error("Error fetching image:", error);
+        alert("Something went Wrong Please Try After Later")
+
       }
       eleA.appendChild(imgs);
     } else if (mode === "text2audio") {
@@ -350,6 +363,8 @@ export default function Avaz() {
         eleA.appendChild(audioPlayer);
       } catch (error) {
         console.error("Error generating audio:", error);
+        alert("Something went Wrong Please Try After Later")
+
       }
     } else {
       console.log("jj ");
@@ -479,10 +494,27 @@ export default function Avaz() {
     end.current.scrollIntoView();
   });
 
+
+
+
+  const expand=()=>{
+    // alert("done")
+    // subMenu.current.classList.toggle('absolute')
+    subMenu.current.classList.toggle('hidden')
+    rotate1.current.classList.toggle('rotate-180')
+  
+  }
+  
+  
+  
+  
+  const subMenu=useRef(null)
+  const rotate1=useRef(null)
+
   return (
     <>
       {
-        <div className=" bordr-4  border-red-800 flex w-full h-dvh overflow-hidden  bg-[rgb(22,23,25)]  ">
+        <div className=" bordr-4  border-red-800 flex w-full h-dvh overflow-hidden  bg-[rgb(249,249,249)]  ">
           {micon && (
             <div
               className="    absolute w-full h-full bg-black bg-opacity-40 justify-center items-center flex "
@@ -494,7 +526,7 @@ export default function Avaz() {
                 </button>
                 <div className=" flex flex-col items-center">
                   <p>Listening.... </p>
-                  <img src={micGif} className=" w-20" />
+                  <img src="/googleVoice.gif" className=" w-20" />
                 </div>
                 <div className="bordr w-full p-2 flex justify-center">
                   <p className="bordr w-[70%] ">{speehc}</p>
@@ -503,98 +535,54 @@ export default function Avaz() {
             </div>
           )}
 
-          <div
-            className={`SIDE-NAV bordr relative z-50 bg-[rgb(22,23,25)]   transition-all delay-100 duration-100   bordr-black w-[18%] h-full flex flex-col items-center p-4 space-y-8 bg-opacity-80 max-[768px]:bg-opacity-100 bg-emerald00 shadw-2xl  max-[768px]:absolute
-             max-[768px]:${
-               open ? "translate-x-[0px]" : "-translate-x-[200px]"
-             }`}
-          >
-            <button
-              className=" absolute right-3 w-16 h-16 p-2 text-red-600 md:hidden "
-              onClick={menu}
-            >
-              <IoClose />
-            </button>
+{load && <div className=' absolute flex top[50%] z-50 w-[100%] h-full justify-center  '>
+              <Loader />
+            </div>}
 
-            <div className=" w-5/6 grid grid-flow-col items-center font-bold text-[#3FDD79]">
-              <Link to="/">
-                <LuUserCircle2 className="w-full h-full " />
-              </Link>
-              <p className=" text-2xl">AvAz</p>
-            </div>
-            <div className="SIDE_MENU w-6/6 m-auto text-neutral-500 ">
-              <ul className=" w-full p-2 text-2xl font-semibld space-y-4 text-whit   max-lg:text-sm ">
-                <li>
-                  <Link
-                    to="/"
-                    className={` hover:text-white flex text-center items-center gap-2 `}
-                  >
-                    <FaHome /> Home
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/ai"
-                    className={`  text-${
-                      loc === "/AVAZ" ? "white" : "black"
-                    } hover:text-${
-                      loc === "/AVAZ" ? "white" : ""
-                    } flex text-center items-center gap-2 `}
-                  >
-                    <BsRobot /> Ai
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/about"
-                    className={` hover:text-white flex text-center items-center gap-2 `}
-                  >
-                    <FcAbout /> About
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/document"
-                    className={` hover:text-white flex text-center items-center gap-2 `}
-                  >
-                    <TiDocumentText /> Document{" "}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/contact"
-                    className={` hover:text-white  flex text-center items-center gap-2 `}
-                  >
-                    {" "}
-                    <TiContacts /> Contact
-                  </Link>
-                </li>
-              </ul>
-            </div>
+<div className={`SIDE-NAV bordr relative z-49 bg-[rgb(249,249,249)]   transition-all delay-100 duration-100   bordr-black w-[18%] h-full flex flex-col items-center p-4 space-y-8 bg-opacity-80 max-[768px]:bg-opacity-100 bg-emerald00 shadw-2xl  max-[768px]:absolute
+             max-[768px]:${open ? 'translate-x-[0px]' : '-translate-x-[800px]'} max-[768px]:w-full max-[768px]:z-50 max-[768px]:p-0`}>
+          <button className=' absolute right-0 p-2  bordr md:hidden ' onClick={menu}><IoClose /></button>
 
-            <div className="PROFILE absolute bottom-4  bordr p-2 w-5/6 rounded-xl bg-[rgb(37,38,40)]">
-              <Link to="/">
-                <div className=" flex items-center gap-2  ">
-                  <LuUserCircle2 className=" w-5/6 h-full bg-white rounded-full" />
-                  <div className=" text-base  text-white">
-                    <p>NAME-XYZ</p>
-                    <p className=" text-neutral-500 text-xs">XYZ@gmail.com</p>
-                  </div>
-                </div>
-              </Link>
-            </div>
+          <div className=' w-5/6 grid grid-flow-col items-center font-bold justify-center'>
+            {/* <Link to='/'>
+              <LuUserCircle2 className='w-full h-full ' />
+            </Link> */}
+            <p className=' text-4xl'>AvAz</p>
+
+          </div>
+          
+          <div className='SIDE_MENU w-6/6 m-auto  '>
+            <ul className=' w-full p-2 text-lg font-medium font-semibld space-y-4 text-whit   max-lg:text-sm max-[768px]:text-md '>
+              <li><Link to='/' className={` text-[rgb(114,116,118)] hover:text-black flex text-center items-center gap-2 `}><FaHome /> Home</Link></li>
+              <li className=' relative overflow-hidden gap-2  flex flex-col ' onClick={expand}>
+              <div className=' flex items-center justify-between hover:text-[rgb(26,27,28)] cursor-pointer'>
+              <Link to='/chatbot' className={`  text-${loc === "/chatbot" ? "black" : ""} hover:text-${loc === "/chatbot" ? "hover:text-red-500" : "hover:text-[rgb(114,116,118)]"} flex text-center items-center gap-2 `}>
+              <BsRobot />
+                    <p>AI</p>
+                    </Link>
+                    </div>
+                    
+              </li>
+              {/* <li><Link to='/about' className={` text-[rgb(114,116,118)] hover:text-black flex text-center items-center gap-2 `}><FcAbout /> About</Link></li> */}
+              <li><Link to='/document' className={` text-[rgb(114,116,118)] hover:text-black flex text-center items-center gap-2 `}><TiDocumentText /> Document </Link></li>
+              <li><Link to='/contact' className={` text-[rgb(114,116,118)] hover:text-black flex text-center items-center gap-2 `}> <TiContacts /> Contact</Link></li>
+            </ul>
           </div>
 
-          <div className=" w-full relative  flex flex-row m-4 rounded-xl borer overflow-hidden">
-            <div className="AI-CHAT bordr bg-[rgb(37,38,40)]  border-green-500 w-[80%] flex flex-col items-center h-full relative  m-auto overflow-auto max-[768px]:w-full  ">
-              {load && (
+          
+        </div>
+
+
+          <div className=" w-full relative  flex flex-row m-4 max-sm:m-0 max-sm:rounded-none rounded-xl borer shadow-lg overflow-hidden">
+            <div className="AI-CHAT bordr bg-white border-green-500 w-[80%] flex flex-col items-center h-full relative  m-auto overflow-auto max-[768px]:w-full  ">
+              {/* {load && (
                 <div className=" absolute flex top-[50%] ">
                   <Loader />
                 </div>
-              )}
+              )} */}
               <div className=" text-center font-bold shadow-sm p-2 w-full  grid-cols-4 max-[768px]:grid grid-flow-row-dense   ">
                 <button
-                  className=" md:hidden text-white text-xl "
+                  className=" md:hidden  text-xl "
                   onClick={menu}
                 >
                   <FiMenu />
@@ -602,17 +590,12 @@ export default function Avaz() {
                 <p className="col-span-2 text-neutral-400">
                   <div className="SWITCH_BTN   ">
                     <div className=" flex justify-center gap-2 text-lg items-center  ">
-                      <div className="border border-white flex rounded-md overflow-hidden  ">
-                        <Link to={"/ai"}>
-                          <p className=" p-1 px-4 cursor-pointer ">CHAT </p>
-                        </Link>
-                        <p className=" border h-auto border-white"></p>
-                        <Link to={"/AVAZ"}>
-                          {" "}
-                          <p className="p-1 px-4 cursor-pointer bg-white text-black">
-                            AVAZ
-                          </p>
-                        </Link>
+                      <div className="border  flex rounded-md overflow-hidden max-sm:text-base  ">
+                      <p className=' p-1 px-4 cursor-pointer    max-sm:px-1'   ><Link to={'/chatbot'}>CHAT</Link> </p>
+                      <p className=' border h-auto '></p>
+                      <p className='p-1 px-4 cursor-pointer bg-black text-white max-sm:px-1' ><Link to={'/avaz'}>AVAZ</Link></p>
+                      <p className=' border h-auto '></p>
+                      <p className='p-1 px-4 cursor-pointer  max-sm:px-1' ><Link to={'/jarvis'}>Jarvis</Link></p>
                       </div>
                     </div>
                   </div>
@@ -620,16 +603,16 @@ export default function Avaz() {
               </div>
               {/*relative* space-y-8  scroll-auto  p-4 flex flex-col px-[10%] pb-[4%]*/}
               <div
-                className="CHATS parent w-full h-full bordr-8  relative space-y-8  scroll-auto  p-4 flex flex-col px-[10%] pb-[4%]  overflow-auto "
+                className={`CHATS parent w-full h-full bordr-8  relative space-y-8  scroll-auto   flex flex-col overflow-auto ${!dis?" p-0 ":"px-[10%] pb-[4%] p-4  "} `}
                 id="chats"
               >
-             {!dis &&   <div
-                  className="  realtive rounded-2xl   "
+                {!dis && <div
+                  className=" After  realtive rounded-2xl p-0    "
                   style={{ position: "relative", display: "inline-block" }}
                   id="chats"
                 >
                   {imageSrc && (
-                    <img className='rounded-2xl'
+                    <img className='rounded-2xl border-3 border-yellow-300'
                       src={imageSrc}
                       alt="Uploaded"
                       style={{ maxWidth: "100%", maxHeight: "100%" }}
@@ -638,7 +621,7 @@ export default function Avaz() {
                   {objects.map((object, index) => (
                     <div
                       key={index}
-                      className="absolute border-2 border-transparent transition-colors duration-300 hover:border-red-500"
+                      className="absolute border-2 border]transparent transition-colors duration-300 hover: border-red-500"
                       style={{
                         left: object.box.xmin,
                         top: object.box.ymin,
@@ -658,30 +641,23 @@ export default function Avaz() {
                   ))}
                 </div>
 
-                      }
-
-                {/* <button onClick={()=>{end.current.scrollIntoView()}}>okkk</button> */}
-                {/* <div className="USER relative flex float-right self-end m-4 w-[40%] whitespace-break-spaces break-words bg-[#3FDD79] bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl ">
-            <button className=' float-end absolute end-0 bottom-0'>
-              okk
-            </button>
-            </div> */}
+                }
 
                 <div ref={end}></div>
               </div>
               {dis && (
-                <div className="INPUT w-full h-36 p-4 border-t border-neutral-700 max-md:h-20 items-center flex  ">
-                  <div className="INPUT-BAR max-h-24 bordr-2 bg-[rgb(22,23,25)] w-[80%] flex flex-row justify-between  items-end   px-2 space-x-1 rounded-xl  m-auto p-2 shadow-lg   ">
+                <div className="INPUT w-full h-36 p-4 border-t border-neutral-300 max-md:h-20 items-center flex  ">
+                  <div className="INPUT-BAR max-h-24  border bg-white w-[80%] flex flex-row justify-between  items-center   px-2 space-x-1 rounded-xl  m-auto p-2 shadow-lg shadow-slate-200 max-sm:w-full   ">
                     <button
-                      className=" text-xl  text-white p-2 rounded-2xl hover:bg-neutral-800 "
+                      className=" text-xl max-sm:text-base   p-2 rounded-2xl hover:bg-gray-200 "
                       onClick={VoiceInputQuery}
                     >
                       <FaMicrophoneAlt />
                     </button>
                     {/* <input type='text' className=' w-[85%] h-60 text-xl text-neutral-400 outline-none bg-[rgb(22,23,25)]  ' onChange={inputQuery} value={input} placeholder='Ask Query' /> */}
                     <textarea
-                      
-                      className="w-[85%]    max-h-20  text-lg text-neutral-400 outline-none bg-[rgb(22,23,25)] resize-none "
+
+                      className="w-[85%]    max-h-20  text-lg max-sm:text-base  outline-none bg-white resize-none "
                       rows={1}
                       onChange={inputQuery}
                       value={input}
@@ -689,7 +665,7 @@ export default function Avaz() {
                       onKeyUp={increaseHieght}
                     ></textarea>
                     <button
-                      className=" text-xl text-red p-2 rounded-2xl hover:bg-neutral-800 cursor-pointer "
+                      className=" text-xl p-2 rounded-2xl hover:bg-neutral-200 max-sm:text-base cursor-pointer "
                       disabled={input.length == 0}
                       onClick={send}
                     >
@@ -699,28 +675,22 @@ export default function Avaz() {
                 </div>
               )}
 
-              {/* extra design below
-            <div className='INPUT-BAR border-2 absolute bottom-[5%]   w-[80%] flex flex-row justify-between   px-2 space-x-1 rounded-xl  m-auto p-2 shadow-lg bg-white    '>
-            <button className=' text-xl  bg-emerald-400 p-2 rounded-2xl hover:bg-emerald-200 ' onClick={VoiceInputQuery}><FaMicrophoneAlt /></button>
-            <input type='text' className=' w-[85%] text-xl outline-none ' onChange={inputQuery} value={input} placeholder='Ask Query' />
-            <button className=' text-xl bg-emerald-400 p-2 rounded-2xl hover:bg-emerald-200 ' disabled={input.length == 0} onClick={send} ><IoSend /></button>
-          </div> */}
             </div>
             <div
-              className={`HISTORY relative bg-[rgb(37,38,40)] z-50 bordr bordr-blue-500 w-[20%] h-full p-6 border-l border-neutral-700 transition-all delay-100 duration-100 max-[768px]:w-[90%]   max-[768px]:absolute right-0 max-[768px]:${
-                openHist ? " translate-x-0" : "translate-x-full "
-              }`}
+              className={`HISTORY relative bg-white  z-0 bordr bordr-blue-500 w-[25%] h-full p-6 border-l border-neutral-300 transition-all delay-100 duration-100 max-[768px]:w-[50%] max-sm:w-[90%]   max-[768px]:absolute right-0 max-[768px]:${openHist ? " translate-x-0" : "translate-x-full "
+                }`}
             >
               <button
-                className=" md:hidden absolute top-[50%] -left-4 text-white "
+                className=" md:hidden absolute top-[50%] -left-4  "
                 onClick={history}
               >
                 <IoMdArrowDropleft />
               </button>
               <div className="DIFFERENT-AI-MODELS-BTNS flex flex-col gap-5 p-4  ">
-                <h1 className=" text-white text-xl">ALL MODELS</h1>
+                <h1 className="  text-xl text-center">ALL MODELS</h1>
+                <hr/>
                 <button
-                  className={`  rounded-xl text-lg text-center h-12 ${timg} flex items-center justify-start gap-2 p-2`}
+                  className={` text-black  rounded-xl text-base text-center h-12 ${timg} flex items-center justify-center gap-2 p-2 hover:opacity-80`}
                   onClick={texttoimg}
                 >
                   {" "}
@@ -728,46 +698,37 @@ export default function Avaz() {
                   Text to Image
                 </button>
                 <button
-                  className={`  rounded-xl text-lg text-center h-12  flex items-center justify-start gap-2 p-2 ${taudio}`}
+                  className={`  rounded-xl text-base text-center h-12  flex items-center justify-center gap-2 p-2 ${taudio} hover:opacity-80`}
                   onClick={texttoaudio}
                 >
-                  <MdAudiotrack/>
+                  <MdAudiotrack />
                   Text To Audio
                 </button>
-                <button className={`rounded-xl text-lg text-center h-12 ${obdetec} flex items-center justify-start gap-2 p-2`} onClick={objdetect}>
-                <IoImageOutline />
-                 
+                <button className={`rounded-xl text-base text-center h-12 ${obdetec} flex items-center justify-center gap-2 p-2 hover:opacity-80`} onClick={objdetect}>
+                  <IoImageOutline />
+
                   Object Detect
                 </button>
-               
-               {!dis && <div className=" absolute bottom-8 ">
-                <div className="relative w-44 ">
-    <label title="Click to upload" htmlFor="button2" className="cursor-pointer w-full py-4 px-3 flex items-center gap-4 before:border-gray-400/60 hover:before:border-gray-300 group dark:before:bg-darker dark:hover:before:border-gray-500 before:bg-gray-100 dark:before:border-gray-600 before:absolute before:inset-0 before:rounded-3xl before:border before:border-dashed before:transition-transform before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95">
-      <div className="w-max relative">
-          <img className="w-10" src="https://www.svgrepo.com/show/485545/upload-cicle.svg" alt="file upload icon" width="450" height="450"/>
-      </div>
-      <div className="relative">
-          <span className="block text-base font-semibold relative text-blue-900 dark:text-white group-hover:text-blue-500">
-              Upload a file
-          </span>
-          <span className="mt-0.5 block text-sm text-gray-500 dark:text-gray-400">Max 2 MB</span>
-      </div>
-     </label>
-    <input hidden  type="file"
-                    accept="image/*"
-                    onChange={handleFileChange} name="button2" id="button2"/>
-</div>
+
+                {!dis && <div className=" absolute bottom-8 ">
+                  <div className="relative w-44 ">
+                    <label title="Click to upload" htmlFor="button2" className="cursor-pointer w-full py-4 px-3 flex items-center gap-4 before:border-gray-400/60 hover:before:border-gray-300 group dark:before:bg-darker dark:hover:before:border-gray-500 before:bg-gray-100 dark:before:border-gray-600 before:absolute before:inset-0 before:rounded-3xl before:border before:border-dashed before:transition-transform before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95">
+                      <div className="w-max relative">
+                        <img className="w-10" src="https://www.svgrepo.com/show/485545/upload-cicle.svg" alt="file upload icon" width="450" height="450" />
+                      </div>
+                      <div className="relative">
+                        <span className="block text-base font-semibold relative text-blue-900 dark:text-white group-hover:text-blue-500">
+                          Upload a file
+                        </span>
+                        <span className="mt-0.5 block text-sm text-gray-500 dark:text-gray-400">Max 2 MB</span>
+                      </div>
+                    </label>
+                    <input hidden type="file"
+                      accept="image/*"
+                      onChange={handleFileChange} name="button2" id="button2" />
+                  </div>
                 </div>
                 }
-
-                {/* img btn remainig */}
-
-                {/* <div className=' '>
-                <form >
-                    <label for='img' ><div className='w-28 h-28 border'> <img src='/imgbtn.jpg' /></div></label>
-                    <input type='file' id='img' className=' hidden'/>
-                </form>
-            </div> */}
               </div>
               <br />
             </div>
