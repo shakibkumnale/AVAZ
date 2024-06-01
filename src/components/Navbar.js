@@ -259,7 +259,7 @@ export default function () {
 </div>}
             {/* <Pop1l poplog={pop} onChange={(value) => setPop(value)} /> */}
             {
-                (location != "/chatbot"  && location != "/new1" && location != "/avaz" && location!="/jarvis"  ) && 
+                (location != "/chatbot"  && location != "/VideoAsk"  && location != "/new1" && location != "/avaz" && location!="/jarvis"  ) && 
 
 
                 //navbar  for device greater than 768px 
@@ -337,7 +337,7 @@ export default function () {
                                     <li><Link to='/chatbot' className={`${location === "/chatbot" ? " text-black hover:text-[rgb(114,116,118)]" : "text-[rgb(114,116,118)] hover:text-black"} `} onClick={() => { setopen(!open) }}>Ai</Link></li>
                                     {/* <li><Link to='/about' className={` ${location === "/about" ? " text-black hover:text-[rgb(114,116,118)]" : "text-[rgb(114,116,118)] hover:text-black"} `} onClick={() => { setopen(!open) }}>About</Link></li> */}
                                     <li><Link to='/document' className={` ${location === "/document" ? " text-black hover:text-[rgb(114,116,118)]" : "text-[rgb(114,116,118)] hover:text-black"} `} onClick={() => { setopen(!open) }}>Document</Link></li>
-                                    <li><Link to='/contact' className={` ${location === "/contact" ? " text-black hover:text-[rgb(114,116,118)]" : "text-[rgb(114,116,118)] hover:text-black"} `} onClick={() => { setopen(!open) }}>Contact</Link></li>
+                                    <li><Link to='/contact' className={` ${location === "/contact" ? " text-black hover:text-[rgb(114,116,118)]" : "text-[rgb(114,116,118)] hover:text-black"} `} onClick={() => { setopen(!open) }}>Contact!</Link></li>
                                     <hr className='  border-gray-300' />
                                     {!userValue.Token &&
                                         <li onClick={() => { setPop(!pop); setopen(!open) }} className={`w-20 py-1 px-2    border-2 text-center rounded-md cursor-pointer  hover:bg-[rgb(71,72,74)] transition  delay-100 duration-200 ease-in bg-[rgb(37,38,40)] text-white  `} >Log In</li>}

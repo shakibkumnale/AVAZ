@@ -10,7 +10,7 @@ export default function Footer2() {
     const location=useLocation().pathname
     return (
         <>
-        { location!="/chatbot" && location!="/sign" && location!="/profile"  && location!="/avaz" && location!="/document" && location!="/forgot" && location!="/jarvis" && location != "/new" && 
+        { location!="/chatbot" && location != "/VideoAsk" && location!="/sign" && location!="/profile"  && location!="/avaz" && location!="/document" && location!="/forgot" && location!="/jarvis" && location != "/new" && 
             <div className=' flex justify-between p-6 shadow-2xl items-center max-md:p-2 max-md:flex-col max-md:gap-3'>
             <div className='left-Footer flex'>
                 <ul className=' flex justify-center items-center gap-5 max-md:flex-col max-md:gap-3'>

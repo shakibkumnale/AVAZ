@@ -24,6 +24,7 @@ import Profilenew from './components/Profilenew';
 import Sidebarr from './components/documents/sidebar';
 import Sidebarold from './components/Sidebar';
 import ChatBots from './components/Chatbots'
+import Vido from './components/Vido'
 function App() {
   
   const dispatch = useDispatch()
@@ -71,6 +72,7 @@ const userValue = useSelector((state) => state.user)
       <Navbar/>
         <Routes>
           <Route path='/' element={<Home2/>}/>
+          <Route path='/VideoAsk' element={<Vido/>}/>
           <Route path='/contact' element={<Contact/>}/>
           {/* <Route path='/about' element={<About/>}/> */}
           <Route path='/document' element={<Sidebarr/>}/>

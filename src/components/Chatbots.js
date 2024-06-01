@@ -680,6 +680,8 @@ export default function Chatbots(props) {
                       <p className=' border h-auto '></p>
                       <p className='p-1 px-4 cursor-pointer max-sm:px-1' ><Link to={'/avaz'}>AVAZ</Link></p>
                       <p className=' border h-auto '></p>
+                      <p className='p-1 px-4 cursor-pointer  max-sm:px-1' ><Link to={'/VideoAsk'}>VideoAsk</Link></p>
+                      <p className=' border h-auto '></p>
                       <p className='p-1 px-4 cursor-pointer  max-sm:px-1' ><Link to={'/jarvis'}>Jarvis</Link></p>
                     </div>
                   </div>

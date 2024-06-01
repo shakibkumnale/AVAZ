@@ -24,7 +24,7 @@ import { RiImageEditLine } from "react-icons/ri";
 import { IoImageOutline } from "react-icons/io5";
 import { IoMdArrowDropdown } from "react-icons/io";
 
-export default function Avaz() {
+export default function Vido() {
   const loc = useLocation().pathname;
   const slct = "text-white  opacity-100  bg-black ";
   const other = "text-gray-500 border border-gray-300 ";
@@ -44,7 +44,11 @@ export default function Avaz() {
   const [micon, setMicon] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [mode, setMode] = useState("text2img");
+  const [file, setFile] = useState(null);
   //input button logic
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
   const inputQuery = (e) => {
     console.log(input);
     setInput(e.target.value);
@@ -55,12 +59,7 @@ export default function Avaz() {
     setMicon(false);
   };
 
-  const handleDownload = () => {
-    const downloadLink = document.createElement("a");
-    downloadLink.href = imageUrl;
-    downloadLink.download = "image.jpg";
-    downloadLink.click();
-  };
+
   //.................Speech--To--Text API's Codes SECTION Start.....................................
   var v;
   useEffect(() => {
@@ -78,7 +77,7 @@ export default function Avaz() {
         setSpeehc(command);
         v = command;
       };
-
+      
       recognitionInstance.onspeechend = () => {
         console.log(v);
 
@@ -120,74 +119,17 @@ export default function Avaz() {
     }
   }, [dis]);
 
-  const texttoimg = () => {
-    setDis(true);
-    setMode("text2img");
-    setTimg(slct);
-    setObdetec(other);
-    setTaudio(other);
-  };
-  const texttoaudio = () => {
-
-    setDis(true);
-    setMode("text2audio");
-    setTimg(other);
-    setObdetec(other);
-    setTaudio(slct);
-  };
-  const objdetect = () => {
-    let CHATS_DivUser = document.getElementById("chats");
 
 
-    setDis(false);
-    setTimg(other);
-    setTaudio(other);
-    setObdetec(slct);
-  }
 
   //.................Smenu mode switcher end.....................................
 
   //.................SObkect detecter start.....................................
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
+ 
 
-    reader.onload = async (event) => {
-      setImageSrc(event.target.result);
-      try {
-        const data = event.target.result.split(",")[1]; // Get base64 image data
-        setLoad(true);
-        
-        const response = await fetch(
-          "https://api-inference.huggingface.co/models/facebook/detr-resnet-50",
-          {
-            headers: {
-              Authorization: "Bearer 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",
-              "Content-Type": "application/json",
-            },
-            method: "POST",
-            body: JSON.stringify({ inputs: data }),
-          }
-        );
-        setLoad(false);
-
-        const result = await response.json();
-        setObjects(result);
-      } catch (error) {
-        console.error("Error detecting objects:", error);
-        alert("Something went Wrong Please Try After Later")
-      }
-    };
-
-    reader.readAsDataURL(file);
-  };
-  const handleMouseOver = (object) => {
-    setHoveredObject(object);
-  };
-
-  const handleMouseOut = () => {
-    setHoveredObject(null);
-  };
+   
+  
+  
   //.................SObkect detecter end.....................................
 
   //.................Text--To--Speech API's Codes SECTION Start.....................................
@@ -206,202 +148,175 @@ export default function Avaz() {
 
   //...............copy logic............
 
-  const copy = (ele) => {
-    let C_text = ele.firstElementChild.innerText;
-    navigator.clipboard.writeText(C_text);
-    alert("copied");
-  };
 
+  
   //......regenarte logic........
-
-  const regenrate = async (eleU, eleA) => {
-    eleA.firstElementChild.innerText = "";
-    let ans = await fetchPost(eleU.innerText);
-
-    for (let i = 0; i < ans.length; i++) {
-      const element = ans[i];
-      // window.scrollTo(0, CHATS_DivUser.scrollHeight)
-      setTimeout(() => {
-        eleA.firstElementChild.innerText += element;
-      }, i * 20);
-    }
-  };
-
+  
+  
+  
   //.................Backend API's Codes SECTION Start.....................................
-
+  
   //send function
   const send = async (e) => {
     // e.preventDefault()
+    e.preventDefault();
     let CHATS_DivUser = document.getElementById("chats");
 
-    let eleU = document.createElement("div");
-    eleU.setAttribute("disabled", "true");
-    let eleU_A = document.createElement("button");
+    let eleU = document.createElement('div')
+    let editModal = <div className=' w-[50%] h-[50%] border bg-white'>
+      <textarea>edit</textarea>
+      <button>Save</button>
+      <button>Cancel</button>
+    </div>
 
-    eleU.className +=
-      "USER rmc outline-none max-sm:max-w-[80%] max-sm:text-sm max-sm:px-2 float-right relative group text-xl max-[768px]:text-md  self-end m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words font-semibold bg[#3FDD79] bg-black text-white bordr-2 p-2 shadow-xl rounded-s-2xl rounded-se-2xl ";
-    eleU_A.className +=
-      " rm text-white absolute top-[100%] right-0 p-4 group-hover:block hidden opacity-50 hover:opacity-100 text-lg";
-    eleU.innerText = input;
 
-    eleU.appendChild(eleU_A);
+
+    eleU.setAttribute('disabled', 'true')
+    let eleU_A = document.createElement('button')
+    let edit = <MdOutlineEdit title='edit' className=' ' />
+    ReactDOM.render(edit, eleU_A)
+    eleU.className += "USER outline-none max-sm:max-w-[80%] max-sm:text-sm max-sm:px-2 float-right relative group text-base  self-end m-4 px-4 w-auto max-w-[50%] whitespace-break-spaces break-words font-semibold bg[#3FDD79] bg-black text-white bordr-1 p-2 shadow-xl rounded-s-2xl rounded-se-2xl "
+    eleU_A.className += " text-white absolute top-[100%] right-0 p-4 group-hover:block hidden opacity-50 hover:opacity-100 text-lg"
+    eleU.innerText = input
+
+    eleU.appendChild(eleU_A)
     // CHATS_DivUser.appendChild(eleU)
+    CHATS_DivUser.insertBefore(eleU, CHATS_DivUser.lastChild)
 
-    CHATS_DivUser.insertBefore(eleU, CHATS_DivUser.lastChild);
+    let eleU_1 = document.createElement('div')
+    eleU_1.className += ' absolute top-[100%] right-[20%]'
+    eleU_1.innerText = "sdkfjjvkdfhvkrhvbkrhbv"
+    // eleU.appendChild(eleU_1)
+    u = input
 
-    u = input;
 
     let u1 = `There are several different types of PCs, each with their own specific purpose and configuration:
     1. Desktop PCs: These are the traditional computers that are typically placed on a desk or table. They consist of a computer case that houses the motherboard, CPU, memory, storage, and other components. Desktop PCs are typically larger in size and offer more customization options, allowing users to upgrade or replace components as needed.
     2. Laptop PCs: Also known as notebooks, these are portable computers that are designed for use on the go. They are lightweight and compact, with all the necessary components integrated into a single unit. Laptops typically have a built-in keyboard, a touchpad, and a display screen. They are powered by batteries and can be easily transported.
     3. All-in-One PCs: These are computers where the monitor and the central processing unit (CPU) are integrated into a single unit. The all-in-one PC eliminates the need for a separate computer tower and allows for a more compact and streamlined design. They are often used in homes or offices where space is limited.
     4. Gaming PCs: These are high-performance computers specifically designed for gaming purposes. They are equipped with powerful processors, dedicated graphics cards, and ample memory and storage capacity. Gaming PCs are built to handle demanding games and provide a smooth gaming experience with high-quality graphics.
-    These are just a few examples of the many types of PCs available in the market. The choice of PC depends on the specific requirements and intended usage of the user or organization.`;
+    These are just a few examples of the many types of PCs available in the market. The choice of PC depends on the specific requirements and intended usage of the user or organization.`
 
-    setInput("");
-    let eleA = document.createElement("div");
-    let eleA_1 = document.createElement("span");
-    let eleA_2 = document.createElement("div");
-    let sub_div = document.createElement("div");
-    let player = document.createElement("ReactPlayer");
+    setInput("")
+    let eleA = document.createElement("div")
+    let eleA_1 = document.createElement('span')
+    let eleA_2 = document.createElement('div')
+    let sub_div = document.createElement('div')
+    let a = <button className="opacity-50 hover:opacity-100 cursor-pointer mx-2 text-base max-sm:text-sm" onClick={() => { textTospeexh(eleA) }}><HiOutlineSpeakerWave /> </button>
+    let b = < >
 
-    let a = "";
-    // let a = <HiOutlineSpeakerWave className="opacity-50 hover:opacity-100 cursor-disable   " onClick={() => { textTospeexh(eleA) }} />
-    let b = (
-      <>
-        {/* <div
-          className=" text-white flex items-cente justify-center h-auto text-center my-2   "
-          title=""
-        >
-          <span className="opacity-50 hover:opacity-100 cursor-pointer">
-            <IoIosArrowBack disabled />
-          </span>
-          <h1 className="opacity-50">0</h1>
-          <span className="opacity-50 hover:opacity-100 cursor-pointer ">
-            <IoIosArrowForward />
-          </span>
-        </div> */}
-        {/* <div
-          className=" absolute top-0 text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 "
-          title="Download"
-          onClick={handleDownload}
-        >
-          <MdDownload />
-        </div> */}
-        {/* <div
-          className=" text-white text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 "
-          title="reload"
-          onClick={() => {
-            regenrate(eleU, eleA);
-          }}
-        >
-          <TbReload />
-        </div> */}
-      </>
-    );
-    eleA.className +=
-      "AVAZ rmc relative z-0 alignitem-center group float-left bg-[#111111] self-start m-4  w-[50%] flex justify-center whitespace-break-spaces break-words shadow-xl border-2 border-[#121212] max-[768px]:p-1 p-[8px] max-[768px]:w-[80%]  rounded-[15px] ";
+      <div className=' textwhite text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='copy' onClick={() => { copy(eleA) }}><MdContentCopy /></div>
+      {/* <div className=' textwhite text-lg cursor-pointer opacity-50 hover:opacity-100 my-2 ' title='reload' onClick={() => { regenrate(eleU, eleA) }}><TbReload /></div> */}
+    </>
+    eleA.className += "AVAZ relative leading-relaxed max-sm:max-w-[80%] max-sm:text-sm max-sm:px-2 z-0 text-base group float-left items-center gap-2 h-auto bg-white self-start m-4 min-w-[20%] px-4 w-auto max-w-[50%] whitespace-break-spaces break-words shadow-xl border p-2 rounded-e-2xl rounded-ss-2xl "
     // eleA_2.classList.add("absolute","right-2","bottom-2")
     // eleA.setAttribute='ref'
 
-    eleA_2.classList.add("float-end", "leading-snug");
-    // sub_div.classList.add("hidden","group-hover:block","absolute","top-[100%]","rounded-sm","bg-white","flex")
-    sub_div.className +=
-      "hidden  group-hover:grid grid-flow-col gap-4 w-auto boder   justify-between absolute right-0 flex items-center p-4 m-2  ";
+    eleA_2.classList.add("float-end", "hidden", "absolute", "top-[100%]", "right-0")
+    let g = <div className=' flex items-center justify-end gap-2 w-full bordr text-base my-2 max-sm:text-sm'>
+      <span className=' textwhite text-base cursor-pointer opacity-50 hover:opacity-100 my2 max-sm:text-sm ' title='copy' onClick={() => { copy(eleA) }}><MdContentCopy /></span>
+      <button className="opacity-50 hover:opacity-100 cursor-pointer mx-2 text-base max-sm:text-sm" onClick={() => { textTospeexh(eleA) }} ><HiOutlineSpeakerWave /></button>
+      </div>
 
-    ReactDOM.render(a, eleA_2);
-    // ReactDOM.render(b, sub_div);
-    if (mode === "text2img") {
-      let imgs = document.createElement("img");
-    ReactDOM.render(b, sub_div);
+    ReactDOM.render(g, eleA_2)
 
-      imgs.className += " w-full h-full rounded-[15px]";
+    sub_div.classList.add("hidden", "group-hover:block", "absolute", "top-[100%]", "rounded-sm", "bg-white", "flex")
+    sub_div.className += "hidden  group-hover:grid grid-flow-col gap-4 w-auto boder   justify-between absolute right-0 flex items-center p-4 m-2  "
 
-      imgs.alt += "my image";
-      try {
-        setLoad(true);
-        const response = await axios.post(
-          "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0",
-          { inputs: u },
-          {
-            headers: {
-              Authorization: "Bearer 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",
-            },
-            responseType: "blob", // Specify response type as blob
+    // ReactDOM.render(a, eleA_2)
+    // ReactDOM.render(b, sub_div)
+
+
+
+    let chat_Div_U = document.createElement('div')
+    chat_Div_U.innerText = u
+    // ChatHist.current.appendChild(chat_Div_U)
+
+
+    // let a = `AVAZ AI.......${input}`
+    // eleA.innerText += await fetchPost(u)
+    
+    
+    
+    // let ans = await fetchPost(u)
+    
+
+
+
+
+
+
+    const formData = new FormData();
+    formData.append('video', file);
+
+    try {
+      setLoad(true)
+      const uploadResponse = await axios.post('http://localhost:3001/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const fileUri = uploadResponse.data.fileUri;
+     
+      var ans1 = await axios.post('http://localhost:3001/ask', {
+        fileUri,
+        input,
+      });
+      setLoad(false)
+      let ans=ans1.data
+      console.log(ans);
+      console.log(ans1);
+      for (let i = 0; i < ans.length; i++) {
+        const element = ans[i];
+        // window.scrollTo(0, CHATS_DivUser.scrollHeight)
+        // end.current.scrollIntoView()
+  
+        setTimeout(() => {
+          end.current.scrollIntoView()
+          eleA_1.innerText += element
+          if (i === ans.length - 1) {
+            eleA_2.classList.remove("hidden")
+            //       alert("done")
+            //       
+  
+            // </div>
+  
           }
-        );
-        setLoad(false);
-        const url = URL.createObjectURL(new Blob([response.data]));
-        imgs.src += url;
-        setImageUrl(url);
-      } catch (error) {
-        console.error("Error fetching image:", error);
-        alert("Something went Wrong Please Try After Later")
+        }, i * 20);
+        hisScroll.current.scrollIntoView()
 
+        eleA.appendChild(eleA_1)
+        eleA.appendChild(eleA_2)
+    
+        // eleA.appendChild(sub_div)
+        //  CHATS_DivUser.appendChild(eleA)
+        CHATS_DivUser.insertBefore(eleA, CHATS_DivUser.lastChild)
+    
+    
+    
+        // let chat_Div_A=document.createElement('div')
+        chat_Div_U.innerText += ans
+  
+  
+  
+  
       }
-      eleA.appendChild(imgs);
-    } else if (mode === "text2audio") {
-      try {
-        setLoad(true);
-        const response = await axios.post(
-          "https://api-inference.huggingface.co/models/facebook/musicgen-small",
-          { inputs: u },
-          {
-            headers: {
-              Authorization: "Bearer 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",
-            },
-            responseType: "arraybuffer",
-          }
-        );
-        setLoad(false);
-        const blob = new Blob([response.data], { type: "audio/mp3" });
-        var url = URL.createObjectURL(blob);
-        eleA.innerHTML = ""; // Clear any previous content
-        const audioPlayer = document.createElement("audio");
-        audioPlayer.src = url;
-        audioPlayer.controls = true;
-        eleA.appendChild(audioPlayer);
-      } catch (error) {
-        console.error("Error generating audio:", error);
-        alert("Something went Wrong Please Try After Later")
-
-      }
-    } else {
-      console.log("jj ");
+     
+    } catch (error) {
+      console.error('Error uploading file or asking question:', error);
     }
 
-    // let a = AVAZ AI.......${input}
-    // eleA.innerText += await fetchPost(u)
-    // let ans = await fetchPost(u)
-    let ans = "dhdhh";
-    // my code start
+   
 
-    // my code end
-    // let ans = u
-    // text animation logic
-    // for (let i = 0; i < ans.length; i++) {
-    //   const element = ans[i];
-    //   // window.scrollTo(0, CHATS_DivUser.scrollHeight)
-    //   // end.current.scrollIntoView()
+   
 
-    //   setTimeout(() => {
-    //     end.current.scrollIntoView()
-    //     eleA_1.innerText += element
+    // ChatHist.current.appendChild(chat_Div_A)
 
-    //   }, i * 20);
-    //   if (i == ans.length - 1) {
-    //     console.log("done");
-    //   }
 
-    // }
 
-    // eleA.appendChild(eleA_1)
-    eleA.appendChild(eleA_2);
-    eleA.appendChild(sub_div);
-
-    // hh    // CHATS_DivUser.appendChild(eleA)
-    CHATS_DivUser.insertBefore(eleA, CHATS_DivUser.lastChild);
   };
+
 
   const send1 = async (e) => {
     // e.preventDefault()
@@ -444,23 +359,7 @@ export default function Avaz() {
     }
   };
 
-  //post logic
-  const fetchPost = async (query) => {
-    try {
-// const apiKey = "AIzaSyBdcLXGMc0HO0S0VOhLj_ojrwrRKUIH44k";
-// 
-      setLoad(true);
-      const res = await axios.post("http://localhost:3001/POST", { query });
-      setLoad(false);
-      console.log(res);
-      return res.data;
-    } catch (error) {
-      setLoad(false);
-      console.log(error);
-      alert("server Error");
-      return "server Error";
-    }
-  };
+
 
   const increaseHieght = (e) => {
     e.target.style.height = "auto";
@@ -512,10 +411,38 @@ export default function Avaz() {
   
   const subMenu=useRef(null)
   const rotate1=useRef(null)
+  const copy = (ele) => {
+    // let C_text = ele.firstElementChild.innerText
+    let C_text = ele.innerText
+
+    alert(C_text)
+    navigator.clipboard.writeText(C_text)
+  }
+
+  const hisScroll=useRef();
+   const fetchPost = async (query) => {
+    try {
+      let Email="shakibkumnali@gmail.com"
+      setLoad(true)
+      const res = await axios.post("http://localhost:3001/POST", { query, Email })
+      
+      
+
+      setLoad(false)
+      console.log(res)
+      return res.data
+    } catch (error) {
+      setLoad(false)
+      console.log(error)
+      alert("server Error")
+      return "Please Try Agin later"
+    }
+  }
+
 
   return (
     <>
-      {
+    <form onSubmit={send}>{
         <div className=" bordr-4  border-red-800 flex w-full h-dvh overflow-hidden  bg-[rgb(249,249,249)]  ">
           {micon && (
             <div
@@ -595,10 +522,9 @@ export default function Avaz() {
                       <div className="border  flex rounded-md overflow-hidden max-sm:text-base  ">
                       <p className=' p-1 px-4 cursor-pointer    max-sm:px-1'   ><Link to={'/chatbot'}>CHAT</Link> </p>
                       <p className=' border h-auto '></p>
-                      <p className='p-1 px-4 cursor-pointer bg-black text-white max-sm:px-1' ><Link to={'/avaz'}>AVAZ</Link></p>
+                      <p className='p-1 px-4 cursor-pointer max-sm:px-1' ><Link to={'/avaz'}>AVAZ</Link></p>
                       <p className=' border h-auto '></p>
-                      <p className='p-1 px-4 cursor-pointer  max-sm:px-1' ><Link to={'/VideoAsk'}>VideoAsk</Link></p>
-                      <p className=' border h-auto '></p>
+                      <p className=' p-1 px-4 cursor-pointer  bg-black text-white  max-sm:px-1'   ><Link to={'/VideoAsk'}>VideoAsk</Link> </p><p className=' border h-auto '></p>
                       <p className='p-1 px-4 cursor-pointer  max-sm:px-1' ><Link to={'/jarvis'}>Jarvis</Link></p>
                       </div>
                     </div>
@@ -610,46 +536,11 @@ export default function Avaz() {
                 className={`CHATS parent w-full h-full bordr-8  relative space-y-8  scroll-auto   flex flex-col overflow-auto ${!dis?" p-0 ":"px-[10%] pb-[4%] p-4  "} `}
                 id="chats"
               >
-                {!dis && <div
-                  className=" After  realtive rounded-2xl p-0    "
-                  style={{ position: "relative", display: "inline-block" }}
-                  id="chats"
-                >
-                  {imageSrc && (
-                    <img className='rounded-2xl border-3 border-yellow-300'
-                      src={imageSrc}
-                      alt="Uploaded"
-                      style={{ maxWidth: "100%", maxHeight: "100%" }}
-                    />
-                  )}
-                  {objects.map((object, index) => (
-                    <div
-                      key={index}
-                      className="absolute border-2 border]transparent transition-colors duration-300 hover: border-red-500"
-                      style={{
-                        left: object.box.xmin,
-                        top: object.box.ymin,
-                        width: object.box.xmax - object.box.xmin,
-                        height: object.box.ymax - object.box.ymin,
-                        // pointerEvents: 'none', // Prevent the box from blocking mouse events on the image
-                      }}
-                      onMouseEnter={() => handleMouseOver(object)}
-                      onMouseLeave={handleMouseOut}
-                    >
-                      {hoveredObject === object && (
-                        <div className="absolute top-0 left-0 bg-white text-black p-1">
-                          {object.label}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                }
-
+                
+                <div className='SCROLL' ref={hisScroll}></div>
                 <div ref={end}></div>
               </div>
-              {dis && (
+              
                 <div className="INPUT w-full h-36 p-4 border-t border-neutral-300 max-md:h-20 items-center flex  ">
                   <div className="INPUT-BAR max-h-24  border bg-white w-[80%] flex flex-row justify-between  items-center   px-2 space-x-1 rounded-xl  m-auto p-2 shadow-lg shadow-slate-200 max-sm:w-full   ">
                     <button
@@ -672,12 +563,13 @@ export default function Avaz() {
                       className=" text-xl p-2 rounded-2xl hover:bg-neutral-200 max-sm:text-base cursor-pointer "
                       disabled={input.length == 0}
                       onClick={send}
+                      type="submit"
                     >
                       <IoSend />
                     </button>
                   </div>
                 </div>
-              )}
+              
 
             </div>
             <div
@@ -691,54 +583,33 @@ export default function Avaz() {
                 <IoMdArrowDropleft />
               </button>
               <div className="DIFFERENT-AI-MODELS-BTNS flex flex-col gap-5 p-4  ">
-                <h1 className="  text-xl text-center">ALL MODELS</h1>
-                <hr/>
-                <button
-                  className={` text-black  rounded-xl text-base text-center h-12 ${timg} flex items-center justify-center gap-2 p-2 hover:opacity-80`}
-                  onClick={texttoimg}
-                >
-                  {" "}
-                  <RiImageEditLine />
-                  Text to Image
-                </button>
-                <button
-                  className={`  rounded-xl text-base text-center h-12  flex items-center justify-center gap-2 p-2 ${taudio} hover:opacity-80`}
-                  onClick={texttoaudio}
-                >
-                  <MdAudiotrack />
-                  Text To Audio
-                </button>
-                <button className={`rounded-xl text-base text-center h-12 ${obdetec} flex items-center justify-center gap-2 p-2 hover:opacity-80`} onClick={objdetect}>
-                  <IoImageOutline />
+                
 
-                  Object Detect
-                </button>
-
-                {!dis && <div className=" absolute bottom-8 ">
-                  <div className="relative w-44 ">
-                    <label title="Click to upload" htmlFor="button2" className="cursor-pointer w-full py-4 px-3 flex items-center gap-4 before:border-gray-400/60 hover:before:border-gray-300 group dark:before:bg-darker dark:hover:before:border-gray-500 before:bg-gray-100 dark:before:border-gray-600 before:absolute before:inset-0 before:rounded-3xl before:border before:border-dashed before:transition-transform before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95">
+                <div className=" absolute bottom-8 " >
+                  <div className="relative w-44 " >
+                    <label title="Click to upload"  htmlFor="buttn2" className="cursor-pointer w-full py-4 px-3 flex items-center gap-4 before:border-gray-400/60 hover:before:border-gray-300 group dark:before:bg-darker dark:hover:before:border-gray-500 before:bg-gray-100 dark:before:border-gray-600 before:absolute before:inset-0 before:rounded-3xl before:border before:border-dashed before:transition-transform before:duration-300 hover:before:scale-105 active:duration-75 active:before:scale-95">
                       <div className="w-max relative">
                         <img className="w-10" src="https://www.svgrepo.com/show/485545/upload-cicle.svg" alt="file upload icon" width="450" height="450" />
                       </div>
-                      <div className="relative">
+                      <div className="relative" >
                         <span className="block text-base font-semibold relative text-blue-900 dark:text-white group-hover:text-blue-500">
                           Upload a file
                         </span>
                         <span className="mt-0.5 block text-sm text-gray-500 dark:text-gray-400">Max 2 MB</span>
                       </div>
                     </label>
-                    <input hidden type="file"
-                      accept="image/*"
-                      onChange={handleFileChange} name="button2" id="button2" />
                   </div>
+                  
+                    <input type="file" hidden  id="buttn2" accept="video/*" onChange={handleFileChange} required />
                 </div>
-                }
+                
               </div>
               <br />
             </div>
           </div>
         </div>
       }
+      </form>
     </>
   );
 }
