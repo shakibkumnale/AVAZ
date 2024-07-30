@@ -243,28 +243,49 @@ export default function Vido() {
 
 
 
-
-
-
     const formData = new FormData();
-    formData.append('video', file);
-
+    formData.append('pdf', file);  // Change 'video' to 'pdf'
+    
     try {
-      setLoad(true)
-      const uploadResponse = await axios.post('http://localhost:3001/upload', formData, {
+      setLoad(true);
+      // Upload the PDF file to the server
+      const uploadResponse = await axios.post('http://localhost:3001/upload-pdf', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+    
       const fileUri = uploadResponse.data.fileUri;
-     
-      var ans1 = await axios.post('http://localhost:3001/ask', {
+    
+      // Send a request to ask questions about the uploaded PDF
+      const ans1 = await axios.post('http://localhost:3001/ask', {
         fileUri,
         input,
       });
+    
+     
+    
+
+
+    // const formData = new FormData();
+    // formData.append('video', file);
+
+    // try {
+    //   setLoad(true)
+    //   const uploadResponse = await axios.post('http://localhost:3001/upload', formData, {
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data',
+    //     },
+    //   });
+
+    //   const fileUri = uploadResponse.data.fileUri;
+     
+    //   var ans1 = await axios.post('http://localhost:3001/ask', {
+    //     fileUri,
+    //     input,
+    //   });
       setLoad(false)
-      let ans=ans1.data
+      let ans=ans1.data.answer
       console.log(ans);
       console.log(ans1);
       for (let i = 0; i < ans.length; i++) {
@@ -600,7 +621,7 @@ export default function Vido() {
                     </label>
                   </div>
                   
-                    <input type="file" hidden  id="buttn2" accept="video/*" onChange={handleFileChange} required />
+                    <input type="file" hidden  id="buttn2" accept="pdf/*" onChange={handleFileChange} required />
                 </div>
                 
               </div>

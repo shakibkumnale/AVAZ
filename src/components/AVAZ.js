@@ -162,7 +162,7 @@ export default function Avaz() {
           "https://api-inference.huggingface.co/models/facebook/detr-resnet-50",
           {
             headers: {
-              Authorization: "Bearer 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",
+              Authorization: "Bearer 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",
               "Content-Type": "application/json",
             },
             method: "POST",
@@ -325,7 +325,7 @@ export default function Avaz() {
           { inputs: u },
           {
             headers: {
-              Authorization: "Bearer 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",
+              Authorization: "Bearer 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",
             },
             responseType: "blob", // Specify response type as blob
           }
@@ -348,7 +348,7 @@ export default function Avaz() {
           { inputs: u },
           {
             headers: {
-              Authorization: "Bearer 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",
+              Authorization: "Bearer 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",
             },
             responseType: "arraybuffer",
           }
